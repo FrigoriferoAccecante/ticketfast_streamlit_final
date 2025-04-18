@@ -1,9 +1,5 @@
 import streamlit as st
 
-
-
-
-
 st.title("Inserisci URL Google Sheet")
 
 urlSS = st.text_input("Inserisci l'URL del foglio Google Sheet")
