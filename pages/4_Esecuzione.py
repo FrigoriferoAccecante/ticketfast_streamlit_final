@@ -12,6 +12,8 @@ from email.mime.base import MIMEBase
 from email import encoders
 from google_auth_oauthlib.flow import InstalledAppFlow
 
+st.title("Schermata 4 - Esecuzione completa")
+
 def invia_email_con_allegato(email_mittente, password, email_destinatario, oggetto, corpo, percorso_allegato):
     msg = MIMEMultipart()
     msg['From'] = email_mittente
@@ -36,78 +38,64 @@ def invia_email_con_allegato(email_mittente, password, email_destinatario, ogget
     except Exception as e:
         st.error(f"Errore durante l'invio dell'email: {e}")
 
-def show():
-    st.title("Schermata 4 - Esecuzione finale")
+def process():
+    SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
+    if os.path.exists('token.json'):
+        os.remove('token.json')
 
-    if st.button("Esegui processo"):
-        SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
-        if os.path.exists('token.json'):
-            os.remove('token.json')
+    flow = InstalledAppFlow.from_client_secrets_file('client_secret.json', SCOPES)
+    creds = flow.run_local_server(port=0)
+    with open('token.json', 'w') as token:
+        token.write(creds.to_json())
 
-        flow = InstalledAppFlow.from_client_secrets_file('client_secret.json', SCOPES)
-        creds = flow.run_local_server(port=0)
-        with open('token.json', 'w') as token:
-            token.write(creds.to_json())
+    gc = gspread.authorize(creds)
+    sht = gc.open_by_url(st.session_state.urlSS)
+    worksheet = sht.get_worksheet(0)
 
-        gc = gspread.authorize(creds)
-        sheet_url = st.session_state.get("urlSS")
-        if not sheet_url:
-            st.error("URL Google Sheet mancante.")
-            return
+    x = int(st.session_state.get("x", 100))
+    y = int(st.session_state.get("y", 100))
+    email_mittente = st.session_state.get("email_mittente")
+    password = st.session_state.get("password")
+    oggetto = st.session_state.get("oggetto")
+    corpo = st.session_state.get("corpo")
+    input_pdf = st.session_state.get("pdf_path")
 
-        sht = gc.open_by_url(sheet_url)
-        worksheet = sht.get_worksheet(0)
+    if not all([email_mittente, password, oggetto, corpo, input_pdf]):
+        st.error("Dati mancanti!")
+        return
 
-        x = int(st.session_state.get("x", 100))
-        y = int(st.session_state.get("y", 100))
-        email_mittente = st.session_state.get("email_mittente")
-        password = st.session_state.get("password")
-        oggetto = st.session_state.get("oggetto")
-        corpo = st.session_state.get("corpo")
-        uploaded_file = st.session_state.get("pdf_file")
+    progress = st.progress(0)
+    i = 0
 
-        if not uploaded_file:
-            st.error("File PDF mancante.")
-            return
+    while worksheet.cell(2 + i, 4).value is not None:
+        if worksheet.cell(2 + i, 6).value is None:
+            nome = worksheet.cell(2+i, 2).value
+            cognome = worksheet.cell(2+i, 3).value
+            email = worksheet.cell(2+i, 4).value
+            data = worksheet.cell(2+i, 5).value
+            posto = worksheet.cell(2+i, 7).value
 
-        input_path = "template.pdf"
-        with open(input_path, "wb") as f:
-            f.write(uploaded_file.getvalue())
+            qr = qrcode.make(f"{nome} {cognome} {email} {data} {posto}")
+            qr_image = qr.convert("RGB")
+            n = random.randint(1,9999)
+            qr_path = f"/mnt/data/qr_{n}.png"
+            qr_image.save(qr_path)
 
-        i = 0
-        progress = st.progress(0)
+            doc = fitz.open(input_pdf)
+            page = doc[0]
+            rect = fitz.Rect(x, y, x + qr_image.width, y + qr_image.height)
+            page.insert_image(rect, filename=qr_path)
+            pdf_output_path = f"/mnt/data/biglietto_{n}.pdf"
+            doc.save(pdf_output_path)
+            doc.close()
 
-        while worksheet.cell(2 + i, 4).value is not None:
-            if worksheet.cell(2 + i, 6).value is None:
-                nome = worksheet.cell(2+i, 2).value
-                cognome = worksheet.cell(2+i, 3).value
-                email = worksheet.cell(2+i, 4).value
-                data = worksheet.cell(2+i, 5).value
-                posto = worksheet.cell(2+i, 7).value
+            invia_email_con_allegato(email_mittente, password, email, oggetto, corpo, pdf_output_path)
+            worksheet.update_cell(2 + i, 6, 'y')
+        i += 1
+        progress.progress(min(i * 10, 100))
+        time.sleep(0.1)
 
-                qr_data = f"{nome} {cognome} {email} {data} {posto}"
-                qr = qrcode.make(qr_data)
-                qr_image = qr.convert("RGB")
-                n = random.randint(1,9999)
-                qr_path = f"qr_{n}.png"
-                qr_image.save(qr_path)
+    st.success("Operazione completata con successo!")
 
-                doc = fitz.open(input_path)
-                page = doc[0]
-                rect = fitz.Rect(x, y, x + qr_image.width, y + qr_image.height)
-                page.insert_image(rect, filename=qr_path)
-                output_path = f"biglietto_{n}.pdf"
-                doc.save(output_path)
-                doc.close()
-
-                invia_email_con_allegato(email_mittente, password, email, oggetto, corpo, output_path)
-                worksheet.update_cell(2 + i, 6, 'y')
-
-            i += 1
-            progress.progress(min(i * 10, 100))
-            time.sleep(0.1)
-
-        st.success("Processo completato!")
-
-    if st.button("◀️ Indietro"):
-        st.session_state.page = 'pages/3_Email'
+if st.button("Avvia processo completo"):
+    process()
