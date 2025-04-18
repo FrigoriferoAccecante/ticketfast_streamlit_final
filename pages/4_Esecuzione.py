@@ -12,7 +12,7 @@ from email.mime.base import MIMEBase
 from email import encoders
 from google_auth_oauthlib.flow import InstalledAppFlow
 
-st.title("Schermata 4 - Esecuzione completa")
+st.title("SEsecuzione completa")
 
 def invia_email_con_allegato(email_mittente, password, email_destinatario, oggetto, corpo, percorso_allegato):
     msg = MIMEMultipart()
