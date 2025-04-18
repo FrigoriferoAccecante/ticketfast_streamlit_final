@@ -1,16 +1,8 @@
 import streamlit as st
 
 def show():
-    st.title("Inserisci URL Google Sheet")
-
-    urlSS = st.text_input("Inserisci l'URL del foglio Google Sheet")
-
-    if 'urlSS' not in st.session_state:
-        st.session_state.urlSS = ""
-
-    if st.button("Salva URL"):
-        st.session_state.urlSS = urlSS
-        st.success("URL salvato correttamente!")
+    st.title("Schermata 1 - Inserisci URL Google Sheet")
+    st.text_input("Inserisci l'URL del foglio", key="urlSS")
 
     if st.button("Avanti ▶️"):
-            st.session_state.page = 'pages/2_Coordinate_e_PDF'
+        st.session_state.page = 'pages/2_Coordinate_e_PDF'
