@@ -99,3 +99,8 @@ def process():
 
 if st.button("Avvia processo completo"):
     process()
+    
+
+if st.button("◀️ Indietro"):
+
+    st.session_state.page = 'pages/3_Email'

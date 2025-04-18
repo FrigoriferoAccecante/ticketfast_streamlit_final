@@ -13,3 +13,11 @@ if st.button("Salva dati email"):
     st.session_state.oggetto = oggetto
     st.session_state.corpo = corpo
     st.success("Dati salvati!")
+
+col1, col2 = st.columns(2)
+with col1:
+    if st.button("◀️ Indietro"):
+        st.session_state.page = 'pages/2_Coordinate_e_PDF'
+with col2:
+    if st.button("Avanti ▶️"):
+        st.session_state.page = 'pages/4_Esecuzione'

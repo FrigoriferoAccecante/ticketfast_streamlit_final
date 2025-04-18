@@ -40,3 +40,11 @@ if pdf_file and st.button("Genera anteprima con QR"):
 if "pdf_path" in st.session_state:
     with open(st.session_state.pdf_path, "rb") as f:
         st.download_button("Scarica PDF aggiornato", data=f, file_name="output.pdf")
+
+col1, col2 = st.columns(2)
+with col1:
+    if st.button("◀️ Indietro"):
+        st.session_state.page = 'pages/1_URL'
+with col2:
+    if st.button("Avanti ▶️"):
+        st.session_state.page = 'pages/3_Email'

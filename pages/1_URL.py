@@ -11,3 +11,6 @@ if 'urlSS' not in st.session_state:
 if st.button("Salva URL"):
     st.session_state.urlSS = urlSS
     st.success("URL salvato correttamente!")
+
+if st.button("Avanti ▶️"):
+        st.session_state.page = 'pages/2_Coordinate_e_PDF'
