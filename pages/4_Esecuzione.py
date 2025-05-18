@@ -76,7 +76,7 @@ def process():
             numero_biglietti_prima = worksheet.cell(2+i, 6).value
             numero_biglietti_seconda = worksheet.cell(2+i, 7).value
 
-            qr = qrcode.make(f"{nome} {cognome} {email} {data} {numero_biglietti_prima} {numero_biglietti_seconda}")
+            qr = qrcode.make(f"Nome:{nome} Cognome:{cognome} e-mail:{email} Serata:{data} Numero biglietti prima:{numero_biglietti_prima} Numero biglietti seconda:{numero_biglietti_seconda}")
             qr_image = qr.convert("RGB")
             n = random.randint(1,9999)
             qr_path = f"/mnt/data/qr_{n}.png"
