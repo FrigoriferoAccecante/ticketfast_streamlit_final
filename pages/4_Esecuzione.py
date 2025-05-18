@@ -73,9 +73,9 @@ def process():
             cognome = worksheet.cell(2+i, 3).value
             email = worksheet.cell(2+i, 4).value
             data = worksheet.cell(2+i, 5).value
-            posto = worksheet.cell(2+i, 7).value
+            numero_biglietti = worksheet.cell(2+i, 6).value
 
-            qr = qrcode.make(f"{nome} {cognome} {email} {data} {posto}")
+            qr = qrcode.make(f"{nome} {cognome} {email} {data} {numero_biglietti}")
             qr_image = qr.convert("RGB")
             n = random.randint(1,9999)
             qr_path = f"/mnt/data/qr_{n}.png"
