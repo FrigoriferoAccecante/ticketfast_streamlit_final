@@ -14,6 +14,11 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.oauth2.credentials import Credentials
 
 st.title("Schermata 4 - Esecuzione completa")
+st.title("📢 Comunicazione importante")
+
+st.markdown("""
+Cliccare il tasto \"Avvia processo completo\" e una volta completato, controllare che sia arrivata la email (controllare Posta in arrivo e Posta indesiderata/spam)
+""")
 os.makedirs("temp", exist_ok=True)
 def invia_email_con_allegato(email_mittente, password, email_destinatario, oggetto, corpo, percorso_allegato):
     msg = MIMEMultipart()
@@ -100,7 +105,7 @@ def process():
 
 if st.button("Avvia processo completo"):
     process()
-col1 = st.columns(1)
+col1, col2 = st.columns(2)
 with col1:
     if st.button("◀️ Indietro"):
         st.session_state.page = 'pages/2_Comunicazione pagamento.py'

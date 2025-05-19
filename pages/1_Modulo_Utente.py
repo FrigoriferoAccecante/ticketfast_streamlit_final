@@ -35,7 +35,7 @@ def show():
                 st.session_state.n_biglietti_seconda = n_biglietti_seconda
 
                 # Puoi aggiungere qui la logica per salvare i dati, ad esempio in un Google Sheet o un database
-    col2 = st.columns(1)
+    col1, col2 = st.columns(2)
     with col2:
         if st.button("Avanti ▶️"):
             st.session_state.page = 'pages/2_Comunicazione pagamento.py'
