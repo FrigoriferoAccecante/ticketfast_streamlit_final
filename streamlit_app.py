@@ -58,7 +58,7 @@ mod.show()
 # Pulsanti di navigazione
 st.markdown("---")
 can_advance = True
-print(st.session_state.get("submitted"))
+print("AAAAAAAAAAAAAAAAAAAAA"+st.session_state.get("submitted"))
 if st.session_state.page_index == 0:
     if not st.session_state.get("submitted"):
         can_advance = False
