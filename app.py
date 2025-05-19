@@ -22,6 +22,17 @@ InstalledAppFlow
 importlib.util
 """
 st.set_page_config(page_title="TicketFast", layout="centered", initial_sidebar_state="collapsed")
+# Salva i pacchetti in requirements.txt, se non esiste
+if not os.path.exists("requirements.txt"):
+    with open("requirements.txt", "w") as f:
+        f.write(requirements)
+
+# Esegue pip install -r requirements.txt
+try:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"])
+except subprocess.CalledProcessError as e:
+    print("Errore durante l'installazione delle dipendenze:", e)
+    sys.exit(1)
 # Elenco delle pagine in ordine
 page_order = [
     'moduli/1_Modulo_Utente',
@@ -58,16 +69,6 @@ if st.session_state.page_index < len(page_order) - 1:
         if st.button("Avanti ▶️"):
             st.session_state.page_index += 1
             st.rerun()
-# Salva i pacchetti in requirements.txt, se non esiste
-if not os.path.exists("requirements.txt"):
-    with open("requirements.txt", "w") as f:
-        f.write(requirements)
 
-# Esegue pip install -r requirements.txt
-try:
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"])
-except subprocess.CalledProcessError as e:
-    print("Errore durante l'installazione delle dipendenze:", e)
-    sys.exit(1)
 
 
