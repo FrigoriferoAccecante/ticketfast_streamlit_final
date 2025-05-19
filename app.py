@@ -24,9 +24,9 @@ importlib.util
 st.set_page_config(page_title="TicketFast", layout="centered", initial_sidebar_state="collapsed")
 # Elenco delle pagine in ordine
 page_order = [
-    'pages/1_Modulo_Utente',
-    'pages/2_Comunicazione pagamento',
-    'pages/4_Esecuzione'
+    'moduli/1_Modulo_Utente',
+    'moduli/2_Comunicazione pagamento',
+    'moduli/4_Esecuzione'
 ]
 
 # Inizializza l'indice della pagina se non presente
