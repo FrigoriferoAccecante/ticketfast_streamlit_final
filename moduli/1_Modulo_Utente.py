@@ -8,7 +8,7 @@ def show():
         cognome = st.text_input("Cognome")
         email = st.text_input("Email")
         
-        st.title("Modulo - Seleziona una data")
+        st.title("Seleziona una data")
 
         date_options = [
             "Prima serata - 5 Giugno 2025",
