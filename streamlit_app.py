@@ -71,8 +71,11 @@ if st.session_state.page_index > 0:
 if st.session_state.page_index < len(page_order) - 1:
     with col2:
         if st.button("Avanti ▶️",key="btn_avanti"):
-            st.session_state.page_index += 1
-            st.rerun()
+            if can_advance:
+                st.session_state.page_index += 1
+                st.rerun()
+            else:
+                st.warning("Devi inviare il modulo prima di proseguire.") 
 
 
 
