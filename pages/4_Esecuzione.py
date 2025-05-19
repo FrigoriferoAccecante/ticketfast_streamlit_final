@@ -69,34 +69,32 @@ def process():
     progress = st.progress(0)
     i = 0
 
-    while worksheet.cell(2 + i, 4).value is not None:
-        if worksheet.cell(2 + i, 8).value is None:
-            nome = worksheet.cell(2+i, 2).value
-            cognome = worksheet.cell(2+i, 3).value
-            email = worksheet.cell(2+i, 4).value
-            data = worksheet.cell(2+i, 5).value
-            numero_biglietti_prima = worksheet.cell(2+i, 6).value
-            numero_biglietti_seconda = worksheet.cell(2+i, 7).value
+    
+    nome = st.session_state.get("nome")
+    cognome = st.session_state.get("cognome")
+    email = st.session_state.get("email")
+    data = st.session_state.get("data_scelta")
+    numero_biglietti_prima = st.session_state.get("n_biglietti_prima")
+    numero_biglietti_seconda = st.session_state.get("n_biglietti_seconda")
 
-            qr = qrcode.make(f"Nome:{nome} Cognome:{cognome} e-mail:{email} Serata:{data} Numero biglietti prima:{numero_biglietti_prima} Numero biglietti seconda:{numero_biglietti_seconda}")
-            qr_image = qr.convert("RGB")
-            n = random.randint(1,9999)
-            qr_path = os.path.join("temp", f"qr_{n}.png")
-            qr_image.save(qr_path)
+    qr = qrcode.make(f"Nome:{nome} Cognome:{cognome} e-mail:{email} Serata:{data} Numero biglietti prima:{numero_biglietti_prima} Numero biglietti seconda:{numero_biglietti_seconda}")
+    qr_image = qr.convert("RGB")
+    n = random.randint(1,9999)
+    qr_path = os.path.join("temp", f"qr_{n}.png")
+    qr_image.save(qr_path)
 
-            doc = fitz.open(input_pdf)
-            page = doc[0]
-            rect = fitz.Rect(x, y, x + qr_image.width, y + qr_image.height)
-            page.insert_image(rect, filename=qr_path)
-            pdf_output_path = os.path.join("temp", f"biglietto_{n}.pdf")
-            doc.save(pdf_output_path)
-            doc.close()
+    doc = fitz.open(input_pdf)
+    page = doc[0]
+    rect = fitz.Rect(x, y, x + qr_image.width, y + qr_image.height)
+    page.insert_image(rect, filename=qr_path)
+    pdf_output_path = os.path.join("temp", f"biglietto_{n}.pdf")
+    doc.save(pdf_output_path)
+    doc.close()
 
-            invia_email_con_allegato(email_mittente, password, email, oggetto, corpo, pdf_output_path)
-            worksheet.update_cell(2 + i, 8, 'y')
-        i += 1
-        progress.progress(min(i * 10, 100))
-        time.sleep(0.1)
+    invia_email_con_allegato(email_mittente, password, email, oggetto, corpo, pdf_output_path)
+    
+    progress.progress(min(i * 10, 100))
+    time.sleep(0.1)
 
     st.success("Operazione completata con successo!")
 
