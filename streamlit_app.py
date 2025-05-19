@@ -43,7 +43,7 @@ page_order = [
 ]
 
 # Inizializza l'indice della pagina se non presente
-if 'page_index' not in st.session_state:
+if  not st.session_state.get('page_index'):
     st.session_state.page_index = 0
 
 # Carica e mostra la pagina corrente
