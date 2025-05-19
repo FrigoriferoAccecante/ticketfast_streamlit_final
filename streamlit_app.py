@@ -51,9 +51,6 @@ mod = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(mod)
 mod.show()
 
-
-
-
 # Pulsanti di navigazione
 st.markdown("---")
 can_advance = True
