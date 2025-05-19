@@ -45,7 +45,7 @@ with col1:
 
 with col2:
     if st.button("Avanti ▶️",key="btn_avanti1"):
-        if 'nome' not in st.session_state or 'cognome' not in st.session_state or 'email' not in st.session_state or 'data_scelta' not in st.session_state or 'n_biglietti_prima' not in st.session_state or 'n_biglietti_seconda' not in st.session_state:
+        if  not st.session_state.get('nome') or  not st.session_state.get('cognome') or  not st.session_state.get('email') or  not st.session_state.get('data_scelta') or  not st.session_state.get('n_biglietti_prima') or  not st.session_state.get('n_biglietti_seconda'):
             st.warning("Per favore, inserisci tutti i dati.")
         else:
             st.session_state.page_index += 1
