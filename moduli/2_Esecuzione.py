@@ -100,7 +100,7 @@ def show():
 
         invia_email_con_allegato(email_mittente, password, email, oggetto, corpo, pdf_output_path)
 
-        progress.progress(min(i * 10, 100))
+        progress.progress(100)
         time.sleep(0.1)
 
         st.success("Operazione completata con successo!")
