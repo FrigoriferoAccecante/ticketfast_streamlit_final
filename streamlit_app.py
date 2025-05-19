@@ -23,7 +23,7 @@ importlib.util
 """
 st.set_page_config(page_title="TicketFast", layout="centered", initial_sidebar_state="collapsed")
 st.title("Benvenuto in TicketFast!")
-st.markdown("Clicca \"Avanti\" per procedere.")
+st.markdown("---")
 # Salva i pacchetti in requirements.txt, se non esiste
 if not os.path.exists("requirements.txt"):
     with open("requirements.txt", "w") as f:
@@ -38,8 +38,7 @@ except subprocess.CalledProcessError as e:
 # Elenco delle pagine in ordine
 page_order = [
     'moduli/1_Modulo_Utente',
-    'moduli/2_Comunicazione pagamento',
-    'moduli/3_Esecuzione'
+    'moduli/2_Esecuzione'
 ]
 
 # Inizializza l'indice della pagina se non presente

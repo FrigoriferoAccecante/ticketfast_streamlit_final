@@ -14,10 +14,11 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.oauth2.credentials import Credentials
 
 def show():
-    st.title("Pagina 3 - Esecuzione completa")
+    st.title("Pagina 3 - Richiedi il tuo invito")
 
     st.markdown("""
-    Cliccare il tasto \"Avvia processo completo\" e una volta completato, controllare che sia arrivata la email (controllare Posta in arrivo e Posta indesiderata/spam)
+    Cliccare il tasto \"Genera biglietto\" e una volta completato, controllare che sia arrivata la email.
+    IMPORTANTE: Controllare sia la POSTA IN ARRIVO che la POSTA INDESIDERATA/SPAM
     """)
     os.makedirs("temp", exist_ok=True)
     def invia_email_con_allegato(email_mittente, password, email_destinatario, oggetto, corpo, percorso_allegato):
@@ -64,7 +65,7 @@ def show():
         email_mittente = "picciottiecarusi2@gmail.com"
         password = "xthv czht fcxs zwmn"
         oggetto = "Invito a \'Un caso per Caso\'"
-        corpo = "Grazie per aver voler partecipare alla commedia \'Un caso per Caso\' della Picciotti&Carusi.\nIn allegato trovi il tuo invito!"
+        corpo = "Grazie per voler partecipare alla commedia \'Un caso per Caso\' della Picciotti&Carusi.\nIn allegato trovi il tuo invito!"
         input_pdf = os.path.join("moduli", "biglietto 20.pdf")
 
         if not all([email_mittente, password, oggetto, corpo, input_pdf]):
@@ -103,5 +104,5 @@ def show():
 
         st.success("Operazione completata con successo!")
 
-    if st.button("Avvia processo completo"):
+    if st.button("Genera invito"):
         process()
