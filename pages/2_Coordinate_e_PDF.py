@@ -32,11 +32,11 @@ def add_qr_code_to_pdf(uploaded_file, x, y):
     doc.close()
     return output_path
 
-if pdf_file and st.button("Genera anteprima con QR"):
+if pdf_file and st.button("Carica PDF e genera anteprima con QR"):
     output_path = add_qr_code_to_pdf(pdf_file, x, y)
     st.session_state.pdf_path = output_path
     st.success("PDF aggiornato!")
 
 if "pdf_path" in st.session_state:
     with open(st.session_state.pdf_path, "rb") as f:
-        st.download_button("Scarica PDF aggiornato", data=f, file_name="output.pdf")
+        st.download_button("Scarica anteprima PDF aggiornato", data=f, file_name="output.pdf")
