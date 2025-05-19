@@ -47,8 +47,6 @@ def process():
         st.error("token.json non trovato. Generalo in locale e caricalo sul server.")
         return
 
-    '''flow = InstalledAppFlow.from_client_secrets_file('client_secret.json', SCOPES)
-    creds = flow.run_local_server()'''
     with open('token.json', 'w') as token:
         token.write(creds.to_json())
 
