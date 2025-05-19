@@ -68,7 +68,7 @@ def process():
     i = 0
 
     while worksheet.cell(2 + i, 4).value is not None:
-        if worksheet.cell(2 + i, 6).value is None:
+        if worksheet.cell(2 + i, 8).value is None:
             nome = worksheet.cell(2+i, 2).value
             cognome = worksheet.cell(2+i, 3).value
             email = worksheet.cell(2+i, 4).value
@@ -91,7 +91,7 @@ def process():
             doc.close()
 
             invia_email_con_allegato(email_mittente, password, email, oggetto, corpo, pdf_output_path)
-            worksheet.update_cell(2 + i, 6, 'y')
+            worksheet.update_cell(2 + i, 8, 'y')
         i += 1
         progress.progress(min(i * 10, 100))
         time.sleep(0.1)
