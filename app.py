@@ -34,8 +34,7 @@ if 'page_index' not in st.session_state:
     st.session_state.page_index = 0
 
 # Carica e mostra la pagina corrente
-page_path = f"{page_order[st.session_state.page_index]}.py"
-spec = importlib.util.spec_from_file_location("page_module", page_path)
+spec = importlib.util.spec_from_file_location("modulo", f"{page_order[st.session_state.page_index]}.py")
 mod = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(mod)
 mod.show()
