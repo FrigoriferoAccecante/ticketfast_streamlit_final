@@ -56,8 +56,8 @@ def process():
 
     x = int(st.session_state.get("x", 100))
     y = int(st.session_state.get("y", 100))
-    email_mittente = st.session_state.get("email_mittente")
-    password = st.session_state.get("password")
+    email_mittente = "picciottiecarusi2@gmail.com"
+    password = "xthv czht fcxs zwmn"
     oggetto = st.session_state.get("oggetto")
     corpo = st.session_state.get("corpo")
     input_pdf = st.session_state.get("pdf_path")
