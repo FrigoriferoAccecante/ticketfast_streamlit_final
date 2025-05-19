@@ -54,13 +54,13 @@ def process():
     sht = gc.open_by_url("https://docs.google.com/spreadsheets/d/1JKjWoutLbN3kE1pDxYttduJSkQtPJV9upWqr0uLeQ3Y/edit?resourcekey=&gid=1686242127#gid=1686242127")
     worksheet = sht.get_worksheet(0)
 
-    x = int(st.session_state.get("x", 100))
-    y = int(st.session_state.get("y", 100))
+    x = 2000
+    y = 650
     email_mittente = "picciottiecarusi2@gmail.com"
     password = "xthv czht fcxs zwmn"
     oggetto = st.session_state.get("oggetto")
     corpo = st.session_state.get("corpo")
-    input_pdf = st.session_state.get("pdf_path")
+    input_pdf = "biglietto 20.pdf"
 
     if not all([email_mittente, password, oggetto, corpo, input_pdf]):
         st.error("Dati mancanti!")
@@ -100,3 +100,7 @@ def process():
 
 if st.button("Avvia processo completo"):
     process()
+col1 = st.columns(1)
+with col1:
+    if st.button("◀️ Indietro"):
+        st.session_state.page = 'pages/2_Comunicazione pagamento.py'
