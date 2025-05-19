@@ -6,7 +6,7 @@ import qrcode
 import os
 
 st.title("Schermata 2 - Coordinate + Caricamento PDF")
-
+os.makedirs("temp", exist_ok=True)
 x = st.number_input("Coordinata X", value=100)
 y = st.number_input("Coordinata Y", value=100)
 
@@ -16,7 +16,7 @@ def add_qr_code_to_pdf(uploaded_file, x, y):
     qr_data = "QR di test"
     qr = qrcode.make(qr_data)
     qr_image = qr.convert("RGB")
-    qr_path = "/mnt/data/temp_qr.png"
+    qr_path = os.path.join("temp", "qr_code_image.png")
     qr_image.save(qr_path)
 
     input_path = "/mnt/data/input.pdf"
@@ -27,7 +27,7 @@ def add_qr_code_to_pdf(uploaded_file, x, y):
     page = doc[0]
     rect = fitz.Rect(x, y, x + qr_image.width, y + qr_image.height)
     page.insert_image(rect, filename=qr_path)
-    output_path = "/mnt/data/output.pdf"
+    output_path = os.path.join("temp", "output.pdf")
     doc.save(output_path)
     doc.close()
     return output_path
