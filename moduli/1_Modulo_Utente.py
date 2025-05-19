@@ -34,19 +34,4 @@ def show():
                 st.session_state.n_biglietti_prima = n_biglietti_prima
                 st.session_state.n_biglietti_seconda = n_biglietti_seconda
 
-                # Puoi aggiungere qui la logica per salvare i dati, ad esempio in un Google Sheet o un database
-    st.markdown("---")
-col1, col2 = st.columns(2)
-
-with col1:
-    if st.button("◀️ Indietro",key="btn_indietro1"):
-        st.session_state.page_index -= 1
-        st.rerun()
-
-with col2:
-    if st.button("Avanti ▶️",key="btn_avanti1"):
-        if  not st.session_state.get('nome') or  not st.session_state.get('cognome') or  not st.session_state.get('email') or  not st.session_state.get('data_scelta') or  not st.session_state.get('n_biglietti_prima') or  not st.session_state.get('n_biglietti_seconda'):
-            st.warning("Per favore, inserisci tutti i dati.")
-        else:
-            st.session_state.page_index += 1
-            st.rerun()
+                

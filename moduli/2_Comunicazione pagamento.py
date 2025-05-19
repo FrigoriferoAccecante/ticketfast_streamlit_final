@@ -12,20 +12,3 @@ def show():
     Una volta effettuato il pagamento, cliccare sulla casellina per procedere.
     """)
 
-    st.markdown("---")
-
-    accettato = st.checkbox("✅ Confermo di aver pagato.")
-
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("◀️ Indietro",key="btn_indietro2"):
-            st.session_state.page_index -= 1
-            st.rerun()
-
-    with col2:
-        if st.button("Avanti ▶️",key="btn_avanti2"):
-            if not accettato:
-                st.warning("Per favore, clicca la casella di conferma.")
-            else:
-                st.session_state.page_index += 1
-                st.rerun()
