@@ -11,6 +11,12 @@ pillow
 qrcode
 gspread
 oauth2client
+os
+PIL
+fitz
+time
+random
+smtplib
 """
 
 # Salva i pacchetti in requirements.txt, se non esiste
