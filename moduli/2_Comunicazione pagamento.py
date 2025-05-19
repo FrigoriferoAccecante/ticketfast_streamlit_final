@@ -18,12 +18,12 @@ def show():
 
     col1, col2 = st.columns(2)
     with col1:
-        if st.button("◀️ Indietro"):
+        if st.button("◀️ Indietro",key="btn_indietro"):
             st.session_state.page_index -= 1
             st.rerun()
 
     with col2:
-        if st.button("Avanti ▶️"):
+        if st.button("Avanti ▶️",key="btn_avanti"):
             if not accettato:
                 st.warning("Per favore, clicca la casella di conferma.")
             else:
