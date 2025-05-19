@@ -3,6 +3,8 @@ import streamlit as st
 def show():
     st.title("Pagina 1 - Modulo di Inserimento Dati")
 
+    st.markdown("⚠️ I dati inseriti saranno utilizzati **esclusivamente per fini statistici interni** e non saranno condivisi né usati per scopi commerciali.")
+
     with st.form("modulo_utente"):
         nome = st.text_input("Nome")
         cognome = st.text_input("Cognome")
