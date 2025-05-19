@@ -14,7 +14,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.oauth2.credentials import Credentials
 
 st.title("Schermata 4 - Esecuzione completa")
-
+os.makedirs("temp", exist_ok=True)
 def invia_email_con_allegato(email_mittente, password, email_destinatario, oggetto, corpo, percorso_allegato):
     msg = MIMEMultipart()
     msg['From'] = email_mittente
@@ -83,14 +83,14 @@ def process():
             qr = qrcode.make(f"Nome:{nome} Cognome:{cognome} e-mail:{email} Serata:{data} Numero biglietti prima:{numero_biglietti_prima} Numero biglietti seconda:{numero_biglietti_seconda}")
             qr_image = qr.convert("RGB")
             n = random.randint(1,9999)
-            qr_path = f"/mnt/data/qr_{n}.png"
+            qr_path = os.path.join("temp", f"qr_{n}.png")
             qr_image.save(qr_path)
 
             doc = fitz.open(input_pdf)
             page = doc[0]
             rect = fitz.Rect(x, y, x + qr_image.width, y + qr_image.height)
             page.insert_image(rect, filename=qr_path)
-            pdf_output_path = f"/mnt/data/biglietto_{n}.pdf"
+            pdf_output_path = os.path.join("temp", f"biglietto_{n}.pdf")
             doc.save(pdf_output_path)
             doc.close()
 
