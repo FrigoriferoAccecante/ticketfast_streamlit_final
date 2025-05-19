@@ -38,7 +38,7 @@ spec = importlib.util.spec_from_file_location("modulo", f"{page_order[st.session
 mod = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(mod)
 mod.show()
-st.set_page_config(page_title="TicketFast", layout="centered")
+
 st.title("Benvenuto in TicketFast!")
 st.markdown("Clicca \"Avanti\" per procedere.")
 
