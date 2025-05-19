@@ -64,8 +64,8 @@ def show():
         y = 650
         email_mittente = "picciottiecarusi2@gmail.com"
         password = "xthv czht fcxs zwmn"
-        oggetto = st.session_state.get("oggetto")
-        corpo = st.session_state.get("corpo")
+        oggetto = "Invito a \'Un caso per Caso\'"
+        corpo = "Grazie per aver voler partecipare alla commedia \'Un caso per Caso\' della Picciotti&Carusi.\nIn allegato trovi il tuo invito!"
         input_pdf = "biglietto 20.pdf"
 
         if not all([email_mittente, password, oggetto, corpo, input_pdf]):
