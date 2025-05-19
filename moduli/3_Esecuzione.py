@@ -66,7 +66,7 @@ def show():
         password = "xthv czht fcxs zwmn"
         oggetto = "Invito a \'Un caso per Caso\'"
         corpo = "Grazie per aver voler partecipare alla commedia \'Un caso per Caso\' della Picciotti&Carusi.\nIn allegato trovi il tuo invito!"
-        input_pdf = "moduli\\biglietto 20.pdf"
+        input_pdf = os.path.join("moduli", "biglietto 20.pdf")
 
         if not all([email_mittente, password, oggetto, corpo, input_pdf]):
             st.error("Dati mancanti!")
