@@ -39,7 +39,7 @@ except subprocess.CalledProcessError as e:
 page_order = [
     'moduli/1_Modulo_Utente',
     'moduli/2_Comunicazione pagamento',
-    'moduli/4_Esecuzione'
+    'moduli/3_Esecuzione'
 ]
 
 # Inizializza l'indice della pagina se non presente
