@@ -11,6 +11,7 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
 from google_auth_oauthlib.flow import InstalledAppFlow
+from google.oauth2.credentials import Credentials
 
 st.title("Schermata 4 - Esecuzione completa")
 
@@ -41,10 +42,10 @@ def invia_email_con_allegato(email_mittente, password, email_destinatario, ogget
 def process():
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
     if os.path.exists('token.json'):
-        os.remove('token.json')
+        creds = Credentials.from_authorized_user_file('token.json', SCOPES)
 
-    flow = InstalledAppFlow.from_client_secrets_file('client_secret.json', SCOPES)
-    creds = flow.run_console()
+    '''flow = InstalledAppFlow.from_client_secrets_file('client_secret.json', SCOPES)
+    creds = flow.run_local_server()'''
     with open('token.json', 'w') as token:
         token.write(creds.to_json())
 
