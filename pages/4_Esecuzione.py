@@ -110,3 +110,4 @@ def show():
     with col1:
         if st.button("◀️ Indietro"):
             st.session_state.page_index -= 1
+            st.rerun()

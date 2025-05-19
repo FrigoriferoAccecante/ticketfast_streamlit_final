@@ -20,6 +20,7 @@ def show():
     with col1:
         if st.button("◀️ Indietro"):
             st.session_state.page_index -= 1
+            st.rerun()
 
     with col2:
         if st.button("Avanti ▶️"):
@@ -27,3 +28,4 @@ def show():
                 st.warning("Per favore, clicca la casella di conferma.")
             else:
                 st.session_state.page_index += 1
+                st.rerun()

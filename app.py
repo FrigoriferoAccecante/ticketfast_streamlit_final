@@ -22,21 +22,6 @@ InstalledAppFlow
 importlib.util
 """
 st.set_page_config(page_title="TicketFast", layout="centered", initial_sidebar_state="collapsed")
-
-# Salva i pacchetti in requirements.txt, se non esiste
-if not os.path.exists("requirements.txt"):
-    with open("requirements.txt", "w") as f:
-        f.write(requirements)
-
-# Esegue pip install -r requirements.txt
-try:
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"])
-except subprocess.CalledProcessError as e:
-    print("Errore durante l'installazione delle dipendenze:", e)
-    sys.exit(1)
-st.set_page_config(page_title="TicketFast", layout="centered")
-st.title("Benvenuto in TicketFast!")
-st.markdown("Clicca \"Avanti\" per procedere.")
 # Elenco delle pagine in ordine
 page_order = [
     'pages/1_Modulo_Utente',
@@ -54,6 +39,10 @@ spec = importlib.util.spec_from_file_location("page_module", page_path)
 mod = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(mod)
 mod.show()
+st.set_page_config(page_title="TicketFast", layout="centered")
+st.title("Benvenuto in TicketFast!")
+st.markdown("Clicca \"Avanti\" per procedere.")
+
 
 # Pulsanti di navigazione
 st.markdown("---")
@@ -63,8 +52,23 @@ if st.session_state.page_index > 0:
     with col1:
         if st.button("◀️ Indietro"):
             st.session_state.page_index -= 1
+            st.rerun()
 
 if st.session_state.page_index < len(page_order) - 1:
     with col2:
         if st.button("Avanti ▶️"):
             st.session_state.page_index += 1
+            st.rerun()
+# Salva i pacchetti in requirements.txt, se non esiste
+if not os.path.exists("requirements.txt"):
+    with open("requirements.txt", "w") as f:
+        f.write(requirements)
+
+# Esegue pip install -r requirements.txt
+try:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"])
+except subprocess.CalledProcessError as e:
+    print("Errore durante l'installazione delle dipendenze:", e)
+    sys.exit(1)
+
+
