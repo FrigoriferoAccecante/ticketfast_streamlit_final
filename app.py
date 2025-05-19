@@ -22,6 +22,8 @@ InstalledAppFlow
 importlib.util
 """
 st.set_page_config(page_title="TicketFast", layout="centered", initial_sidebar_state="collapsed")
+st.title("Benvenuto in TicketFast!")
+st.markdown("Clicca \"Avanti\" per procedere.")
 # Salva i pacchetti in requirements.txt, se non esiste
 if not os.path.exists("requirements.txt"):
     with open("requirements.txt", "w") as f:
@@ -50,8 +52,7 @@ mod = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(mod)
 mod.show()
 
-st.title("Benvenuto in TicketFast!")
-st.markdown("Clicca \"Avanti\" per procedere.")
+
 
 
 # Pulsanti di navigazione
