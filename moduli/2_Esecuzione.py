@@ -18,6 +18,7 @@ def show():
 
     st.markdown("""
     Cliccare il tasto \"Genera biglietto\" e una volta completato, controllare che sia arrivata la email.
+                
     IMPORTANTE: Controllare sia la POSTA IN ARRIVO che la POSTA INDESIDERATA/SPAM
     """)
     os.makedirs("temp", exist_ok=True)
