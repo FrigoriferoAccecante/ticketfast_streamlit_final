@@ -17,6 +17,7 @@ fitz
 time
 random
 smtplib
+InstalledAppFlow
 """
 
 # Salva i pacchetti in requirements.txt, se non esiste
