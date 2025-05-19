@@ -14,7 +14,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.oauth2.credentials import Credentials
 
 def show():
-    st.title("Pagina 3 - Richiedi il tuo invito")
+    st.title("Pagina 2 - Richiedi il tuo invito")
 
     st.markdown("""
     Cliccare il tasto \"Genera biglietto\" e una volta completato, controllare che sia arrivata la email.
