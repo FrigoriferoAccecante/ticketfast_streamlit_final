@@ -19,7 +19,7 @@ def add_qr_code_to_pdf(uploaded_file, x, y):
     qr_path = os.path.join("temp", "qr_code_image.png")
     qr_image.save(qr_path)
 
-    input_path = "/mnt/data/input.pdf"
+    input_path = os.path.join("temp", "input.pdf")
     with open(input_path, "wb") as f:
         f.write(uploaded_file.read())
 
