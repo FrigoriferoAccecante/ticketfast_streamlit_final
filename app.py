@@ -2,6 +2,7 @@ import streamlit as st
 import subprocess
 import sys
 import os
+import importlib.util
 
 requirements = """\
 streamlit
@@ -18,6 +19,7 @@ time
 random
 smtplib
 InstalledAppFlow
+importlib.util
 """
 
 # Salva i pacchetti in requirements.txt, se non esiste
@@ -34,8 +36,37 @@ except subprocess.CalledProcessError as e:
 st.set_page_config(page_title="TicketFast", layout="centered")
 st.title("Benvenuto in TicketFast!")
 st.markdown("Clicca \"Avanti\" per procedere.")
+# Elenco delle pagine in ordine
+page_order = [
+    'pages/1_URL',
+    'pages/2_Coordinate_e_PDF',
+    'pages/3_Email',
+    'pages/4_Esecuzione',
+    'pages/5_Modulo_Utente',
+    'pages/6_Comunicazione'
+]
 
+# Inizializza l'indice della pagina se non presente
+if 'page_index' not in st.session_state:
+    st.session_state.page_index = 0
+
+# Carica e mostra la pagina corrente
+page_path = f"{page_order[st.session_state.page_index]}.py"
+spec = importlib.util.spec_from_file_location("page_module", page_path)
+mod = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(mod)
+mod.show()
+
+# Pulsanti di navigazione
+st.markdown("---")
 col1, col2 = st.columns(2)
-with col2:
-    if st.button("Avanti ▶️"):
-        st.session_state.page = 'pages/1_Modulo_Utente.py'
+
+if st.session_state.page_index > 0:
+    with col1:
+        if st.button("◀️ Indietro"):
+            st.session_state.page_index -= 1
+
+if st.session_state.page_index < len(page_order) - 1:
+    with col2:
+        if st.button("Avanti ▶️"):
+            st.session_state.page_index += 1

@@ -19,10 +19,11 @@ def show():
     col1, col2 = st.columns(2)
     with col1:
         if st.button("◀️ Indietro"):
-            st.session_state.page = 'pages/1_Modulo_Utente'
+            st.session_state.page_index -= 1
+
     with col2:
         if st.button("Avanti ▶️"):
             if not accettato:
-                st.warning("Devi accettare la comunicazione prima di continuare.")
+                st.warning("Per favore, clicca la casella di conferma.")
             else:
-                st.session_state.page = 'pages/4_Esecuzione'
+                st.session_state.page_index += 1
