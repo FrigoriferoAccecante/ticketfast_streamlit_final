@@ -43,6 +43,9 @@ def process():
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
     if os.path.exists('token.json'):
         creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+    else:
+        st.error("token.json non trovato. Generalo in locale e caricalo sul server.")
+        return
 
     '''flow = InstalledAppFlow.from_client_secrets_file('client_secret.json', SCOPES)
     creds = flow.run_local_server()'''
