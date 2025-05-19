@@ -61,8 +61,7 @@ can_advance = True
 
 if st.session_state.page_index == 0:
     if not st.session_state.get("submitted"):
-        print("false")
-        can_advance = False
+        can_advance = st.session_state.get("modulo_inviato", False)
 col1, col2 = st.columns(2)
 
 if st.session_state.page_index > 0:

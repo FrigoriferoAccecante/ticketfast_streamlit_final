@@ -27,6 +27,7 @@ def show():
             if not nome or not cognome or not email or not data_scelta or not n_biglietti_prima or not n_biglietti_seconda:
                 st.warning("Per favore, completa tutti i campi.")
             else:
+                st.session_state["modulo_inviato"] = True
                 st.session_state.nome = nome
                 st.session_state.cognome = cognome
                 st.session_state.email = email
