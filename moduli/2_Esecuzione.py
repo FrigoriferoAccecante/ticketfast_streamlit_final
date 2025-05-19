@@ -84,6 +84,16 @@ def show():
         numero_biglietti_prima = st.session_state.get("n_biglietti_prima")
         numero_biglietti_seconda = st.session_state.get("n_biglietti_seconda")
 
+        #Salvo statistica inviti
+        worksheet.append_row([
+            st.session_state["nome"],
+            st.session_state["cognome"],
+            st.session_state["email"],
+            st.session_state["data_scelta"],
+            st.session_state["n_biglietti_prima"],
+            st.session_state["n_biglietti_seconda"]
+        ])
+
         qr = qrcode.make(f"Nome:{nome} Cognome:{cognome} e-mail:{email} Serata:{data} Numero biglietti prima:{numero_biglietti_prima} Numero biglietti seconda:{numero_biglietti_seconda}")
         qr_image = qr.convert("RGB")
         n = random.randint(1,9999)
