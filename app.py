@@ -38,12 +38,9 @@ st.title("Benvenuto in TicketFast!")
 st.markdown("Clicca \"Avanti\" per procedere.")
 # Elenco delle pagine in ordine
 page_order = [
-    'pages/1_URL',
-    'pages/2_Coordinate_e_PDF',
-    'pages/3_Email',
-    'pages/4_Esecuzione',
-    'pages/5_Modulo_Utente',
-    'pages/6_Comunicazione'
+    'pages/1_Modulo_Utente',
+    'pages/2_Comunicazione pagamento',
+    'pages/4_Esecuzione'
 ]
 
 # Inizializza l'indice della pagina se non presente
