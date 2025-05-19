@@ -30,8 +30,8 @@ page_order = [
 ]
 
 # Inizializza l'indice della pagina se non presente
-if 'page_index' not in st.session_state:
-    st.session_state.page_index = 0
+
+st.session_state.page_index = 0
 
 # Carica e mostra la pagina corrente
 spec = importlib.util.spec_from_file_location("modulo", f"{page_order[st.session_state.page_index]}.py")
