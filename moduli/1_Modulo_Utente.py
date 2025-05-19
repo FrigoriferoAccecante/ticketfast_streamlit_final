@@ -22,7 +22,8 @@ def show():
         n_biglietti_prima = st.text_input("Numero biglietti prima serata")
         n_biglietti_seconda = st.text_input("Numero biglietti seconda serata")
 
-        if st.button("Invia", key="btn_conferma_modulo"):
+        st.session_state.submitted = st.form_submit_button("Invia")
+        if st.session_state.submitted:
             if not nome or not cognome or not email or not data_scelta or not n_biglietti_prima or not n_biglietti_seconda:
                 st.warning("Per favore, completa tutti i campi obbligatori e accetta i termini.")
             else:
