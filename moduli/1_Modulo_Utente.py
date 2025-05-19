@@ -25,7 +25,7 @@ def show():
         st.session_state.submitted = st.form_submit_button("Invia")
         if st.session_state.submitted:
             if not nome or not cognome or not email or not data_scelta or not n_biglietti_prima or not n_biglietti_seconda:
-                st.warning("Per favore, completa tutti i campi obbligatori e accetta i termini.")
+                st.warning("Per favore, completa tutti i campi.")
             else:
                 st.session_state.nome = nome
                 st.session_state.cognome = cognome
