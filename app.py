@@ -21,6 +21,7 @@ smtplib
 InstalledAppFlow
 importlib.util
 """
+st.set_page_config(page_title="TicketFast", layout="centered", initial_sidebar_state="collapsed")
 
 # Salva i pacchetti in requirements.txt, se non esiste
 if not os.path.exists("requirements.txt"):
