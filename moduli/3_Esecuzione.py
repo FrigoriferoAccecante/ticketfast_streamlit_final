@@ -15,7 +15,6 @@ from google.oauth2.credentials import Credentials
 
 def show():
     st.title("Pagina 3 - Esecuzione completa")
-    st.title("📢 Comunicazione importante")
 
     st.markdown("""
     Cliccare il tasto \"Avvia processo completo\" e una volta completato, controllare che sia arrivata la email (controllare Posta in arrivo e Posta indesiderata/spam)
