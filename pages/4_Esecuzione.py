@@ -51,7 +51,7 @@ def process():
         token.write(creds.to_json())
 
     gc = gspread.authorize(creds)
-    sht = gc.open_by_url(st.session_state.urlSS)
+    sht = gc.open_by_url("https://docs.google.com/spreadsheets/d/1JKjWoutLbN3kE1pDxYttduJSkQtPJV9upWqr0uLeQ3Y/edit?resourcekey=&gid=1686242127#gid=1686242127")
     worksheet = sht.get_worksheet(0)
 
     x = int(st.session_state.get("x", 100))
