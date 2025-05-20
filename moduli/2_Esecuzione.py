@@ -17,7 +17,7 @@ def show():
     st.title("Pagina 2 - Richiedi il tuo invito")
 
     st.markdown("""
-    Cliccare il tasto \"Genera biglietto\" e una volta completato, controllare che sia arrivata la email.
+    Cliccare il tasto \"Genera invito\" e una volta completato, controllare che sia arrivata la email.
                 
     IMPORTANTE: Controllare sia la POSTA IN ARRIVO che la POSTA INDESIDERATA/SPAM
     """)
@@ -61,13 +61,13 @@ def show():
         sht = gc.open_by_url("https://docs.google.com/spreadsheets/d/1JKjWoutLbN3kE1pDxYttduJSkQtPJV9upWqr0uLeQ3Y/edit?resourcekey=&gid=1686242127#gid=1686242127")
         worksheet = sht.get_worksheet(0)
 
-        x = 2000
-        y = 650
+        x = 2087
+        y = 311
         email_mittente = "picciottiecarusi2@gmail.com"
         password = "xthv czht fcxs zwmn"
         oggetto = "Invito a \'Un caso per Caso\'"
         corpo = "Grazie per voler partecipare alla commedia \'Un caso per Caso\' della Picciotti&Carusi.\nIn allegato trovi il tuo invito!"
-        input_pdf = os.path.join("moduli", "biglietto 20.pdf")
+        input_pdf = os.path.join("moduli", "png2pdf.pdf")
 
         if not all([email_mittente, password, oggetto, corpo, input_pdf]):
             st.error("Dati mancanti!")
