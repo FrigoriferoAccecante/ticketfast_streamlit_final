@@ -61,8 +61,8 @@ def show():
         sht = gc.open_by_url("https://docs.google.com/spreadsheets/d/1JKjWoutLbN3kE1pDxYttduJSkQtPJV9upWqr0uLeQ3Y/edit?resourcekey=&gid=1686242127#gid=1686242127")
         worksheet = sht.get_worksheet(0)
 
-        x = 1955
-        y = 245
+        x = 1945
+        y = 220
         email_mittente = "picciottiecarusi2@gmail.com"
         password = "xthv czht fcxs zwmn"
         oggetto = "Invito a \'Un caso per Caso\'"
