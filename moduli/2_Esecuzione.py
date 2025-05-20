@@ -61,7 +61,7 @@ def show():
         sht = gc.open_by_url("https://docs.google.com/spreadsheets/d/1JKjWoutLbN3kE1pDxYttduJSkQtPJV9upWqr0uLeQ3Y/edit?resourcekey=&gid=1686242127#gid=1686242127")
         worksheet = sht.get_worksheet(0)
 
-        x = 1945
+        x = 1920
         y = 220
         email_mittente = "picciottiecarusi2@gmail.com"
         password = "xthv czht fcxs zwmn"
