@@ -21,8 +21,8 @@ def show():
         data_scelta = st.radio("Scegli una data disponibile:", date_options)
 
         
-        n_biglietti_prima = st.text_input("Prima serata - Per quante persone stai richiedendo l'invito? (Inserire 0 se non si partecipa)")
-        n_biglietti_seconda = st.text_input("Seconda serata - Per quante persone stai richiedendo l'invito? (Inserire 0 se non si partecipa)")
+        n_biglietti_prima = st.text_input("**Prima serata** - Per quante persone stai richiedendo l'invito? (Inserire 0 se non si partecipa)")
+        n_biglietti_seconda = st.text_input("**Seconda serata** - Per quante persone stai richiedendo l'invito? (Inserire 0 se non si partecipa)")
 
         st.markdown("Una volta compilato, clicca invia e attendi qualche secondo.")
         st.session_state.submitted = st.form_submit_button("Invia")
