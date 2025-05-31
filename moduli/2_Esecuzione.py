@@ -104,7 +104,7 @@ def show():
         page = doc[0]
         rect = fitz.Rect(x, y, x + qr_image.width, y + qr_image.height)
         page.insert_image(rect, filename=qr_path)
-        pdf_output_path = os.path.join("temp", f"biglietto_{n}.pdf")
+        pdf_output_path = os.path.join("temp", f"invito_{n}.pdf")
         doc.save(pdf_output_path)
         doc.close()
 
