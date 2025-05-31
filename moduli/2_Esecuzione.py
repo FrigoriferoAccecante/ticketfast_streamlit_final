@@ -59,7 +59,7 @@ def show():
 
         gc = gspread.authorize(creds)
         sht = gc.open_by_url("https://docs.google.com/spreadsheets/d/1JKjWoutLbN3kE1pDxYttduJSkQtPJV9upWqr0uLeQ3Y/edit?resourcekey=&gid=1686242127#gid=1686242127")
-        worksheet = sht.get_worksheet(0)
+        worksheet = sht.get_worksheet(1)
 
         x = 1900
         y = 210
