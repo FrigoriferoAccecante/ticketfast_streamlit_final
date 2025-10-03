@@ -94,7 +94,7 @@ def show():
             int(st.session_state["n_biglietti_seconda"])
         ])
 
-        qr = qrcode.make(f"Nome:{nome} Cognome:{cognome} e-mail:{email} Serata:{data} Numero biglietti prima:{numero_biglietti_prima} Numero biglietti seconda:{numero_biglietti_seconda}")
+        qr = qrcode.make(f"Nome:{nome} Cognome:{cognome} e-mail:{email} Serata:{data} Numero biglietti prima:{numero_biglietti_prima} Numero biglietti seconda:{numero_biglietti_seconda}",box_size=10)
         qr_image = qr.convert("RGB")
         n = random.randint(1,9999)
         qr_path = os.path.join("temp", f"qr_{n}.png")
