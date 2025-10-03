@@ -90,8 +90,8 @@ def show():
             st.session_state["cognome"],
             st.session_state["email"],
             st.session_state["data_scelta"],
-            st.session_state["n_biglietti_prima"],
-            st.session_state["n_biglietti_seconda"]
+            int(st.session_state["n_biglietti_prima"]),
+            int(st.session_state["n_biglietti_seconda"])
         ])
 
         qr = qrcode.make(f"Nome:{nome} Cognome:{cognome} e-mail:{email} Serata:{data} Numero biglietti prima:{numero_biglietti_prima} Numero biglietti seconda:{numero_biglietti_seconda}")
