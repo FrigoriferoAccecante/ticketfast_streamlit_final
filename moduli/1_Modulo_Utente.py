@@ -39,4 +39,6 @@ def show():
                 st.session_state.n_biglietti_prima = n_biglietti_prima
                 st.session_state.n_biglietti_seconda = n_biglietti_seconda
 
+                st.success("Inviato! Ora puoi andare avanti")
+
                 
