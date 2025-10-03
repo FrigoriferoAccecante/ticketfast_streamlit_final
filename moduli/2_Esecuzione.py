@@ -61,8 +61,8 @@ def show():
         sht = gc.open_by_url("https://docs.google.com/spreadsheets/d/1JKjWoutLbN3kE1pDxYttduJSkQtPJV9upWqr0uLeQ3Y/edit?resourcekey=&gid=1686242127#gid=1686242127")
         worksheet = sht.get_worksheet(1)
 
-        x = 2000
-        y = 310
+        x = 2010
+        y = 300
         email_mittente = "picciottiecarusi2@gmail.com"
         password = "eaty uqmz nlyf sczi"
         oggetto = "Invito a \'Sia fatta la volontà\'"
