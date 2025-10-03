@@ -62,7 +62,7 @@ def show():
         worksheet = sht.get_worksheet(1)
 
         x = 2010
-        y = 300
+        y = 298
         email_mittente = "picciottiecarusi2@gmail.com"
         password = "eaty uqmz nlyf sczi"
         oggetto = "Invito a \'Sia fatta la volontà\'"
