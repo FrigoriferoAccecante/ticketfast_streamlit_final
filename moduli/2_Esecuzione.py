@@ -64,7 +64,7 @@ def show():
         x = 2000
         y = 300
         email_mittente = "picciottiecarusi2@gmail.com"
-        password = "xthv czht fcxs zwmn"
+        password = "eaty uqmz nlyf sczi"
         oggetto = "Invito a \'Sia fatta la volontà\'"
         corpo = "Grazie per voler partecipare alla commedia \'Sia fatta la volontà\' della Picciotti&Carusi.\nIn allegato trovi il tuo invito!"
         input_pdf = os.path.join("moduli", "png2pdf.pdf")
