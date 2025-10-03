@@ -13,8 +13,8 @@ def show():
         st.title("Seleziona una data")
 
         date_options = [
-            "Prima serata - 5 Giugno 2025",
-            "Seconda serata - 6 Giugno 2025",
+            "Prima serata - 23 Ottobre 2025",
+            "Seconda serata - 24 Ottobre 2025",
             "Entrambe le serate"
         ]
 

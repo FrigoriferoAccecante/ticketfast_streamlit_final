@@ -65,8 +65,8 @@ def show():
         y = 210
         email_mittente = "picciottiecarusi2@gmail.com"
         password = "xthv czht fcxs zwmn"
-        oggetto = "Invito a \'Un caso per Caso\'"
-        corpo = "Grazie per voler partecipare alla commedia \'Un caso per Caso\' della Picciotti&Carusi.\nIn allegato trovi il tuo invito!"
+        oggetto = "Invito a \'Sia fatta la volontà\'"
+        corpo = "Grazie per voler partecipare alla commedia \'Sia fatta la volontà\' della Picciotti&Carusi.\nIn allegato trovi il tuo invito!"
         input_pdf = os.path.join("moduli", "png2pdf.pdf")
 
         if not all([email_mittente, password, oggetto, corpo, input_pdf]):
