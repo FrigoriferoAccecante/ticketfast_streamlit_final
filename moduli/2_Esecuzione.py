@@ -92,7 +92,7 @@ def show():
             st.session_state["data_scelta"],
             int(st.session_state["n_biglietti_prima"]),
             int(st.session_state["n_biglietti_seconda"])
-        ])
+        ],None,None,"A1")
 
         qr = qrcode.make(f"Nome:{nome} Cognome:{cognome} e-mail:{email} Serata:{data} Numero biglietti prima:{numero_biglietti_prima} Numero biglietti seconda:{numero_biglietti_seconda}",box_size=5, border=4)
         qr_image = qr.convert("RGB")
