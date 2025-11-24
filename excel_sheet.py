@@ -1,105 +1,99 @@
+import sys
 import streamlit as st
+import subprocess
 import pandas as pd
 import requests
-from io import BytesIO
 import plotly.express as px
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+import io
+from urllib.parse import urlparse
+import numpy as np
 
 # Configurazione della pagina
 st.set_page_config(
-    page_title="Excel Data Manager", 
-    page_icon="📊", 
-    layout="wide"
+    page_title="Excel GitHub Analyzer",
+    page_icon="📊",
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
 def initialize_session_state():
-    """Inizializza tutte le variabili del session_state"""
+    """Inizializza le variabili del session_state"""
     if 'excel_data' not in st.session_state:
         st.session_state.excel_data = None
-    
     if 'sheet_names' not in st.session_state:
         st.session_state.sheet_names = []
-    
     if 'current_sheet' not in st.session_state:
         st.session_state.current_sheet = None
-    
     if 'url_input' not in st.session_state:
         st.session_state.url_input = ""
-    
-    if 'loading_state' not in st.session_state:
-        st.session_state.loading_state = False
-    
     if 'data_loaded' not in st.session_state:
         st.session_state.data_loaded = False
-    
-    if 'error_message' not in st.session_state:
-        st.session_state.error_message = ""
-    
     if 'file_info' not in st.session_state:
         st.session_state.file_info = {}
+    if 'loading' not in st.session_state:
+        st.session_state.loading = False
 
-def load_excel_from_url(url):
-    """Carica file Excel da URL"""
+def convert_github_url_to_raw(github_url):
+    """Converte un URL GitHub standard in un URL raw per il download diretto"""
+    if "github.com" in github_url and "/blob/" in github_url:
+        return github_url.replace("github.com", "raw.githubusercontent.com").replace("/blob/", "/")
+    return github_url
+
+def download_excel_from_github(url):
+    """Scarica un file Excel da GitHub"""
     try:
-        st.session_state.loading_state = True
-        st.session_state.error_message = ""
-        
+        raw_url = convert_github_url_to_raw(url)
         headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
         }
-        
-        response = requests.get(url, headers=headers, timeout=30)
+        response = requests.get(raw_url, headers=headers, timeout=30)
         response.raise_for_status()
+        return response.content
+    except requests.exceptions.Timeout:
+        st.error("⏱️ Timeout: Il download del file ha richiesto troppo tempo")
+        return None
+    except requests.exceptions.ConnectionError:
+        st.error("🌐 Errore di connessione: Impossibile raggiungere l'URL")
+        return None
+    except requests.exceptions.HTTPError as e:
+        if e.response.status_code == 404:
+            st.error("❌ File non trovato: Verifica che l'URL sia corretto")
+        else:
+            st.error(f"❌ Errore HTTP {e.response.status_code}: {e}")
+        return None
+    except Exception as e:
+        st.error(f"❌ Errore generico: {str(e)}")
+        return None
+
+def load_excel_data(excel_content, url):
+    """Carica i dati Excel e li salva nel session_state"""
+    try:
+        excel_file = pd.ExcelFile(io.BytesIO(excel_content))
+        sheet_names = excel_file.sheet_names
         
-        excel_file = BytesIO(response.content)
-        excel_data = pd.ExcelFile(excel_file)
+        # Salva nel session_state
+        st.session_state.excel_data = {}
+        for sheet_name in sheet_names:
+            try:
+                df = pd.read_excel(io.BytesIO(excel_content), sheet_name=sheet_name)
+                st.session_state.excel_data[sheet_name] = df
+            except Exception as e:
+                st.warning(f"⚠️ Impossibile leggere il sheet '{sheet_name}': {str(e)}")
         
-        # Salva i dati nel session_state
-        st.session_state.excel_data = excel_data
-        st.session_state.sheet_names = excel_data.sheet_names
-        st.session_state.current_sheet = excel_data.sheet_names[0]
+        st.session_state.sheet_names = list(st.session_state.excel_data.keys())
+        st.session_state.current_sheet = st.session_state.sheet_names[0] if st.session_state.sheet_names else None
         st.session_state.data_loaded = True
+        st.session_state.url_input = url
         st.session_state.file_info = {
             'url': url,
-            'sheets_count': len(excel_data.sheet_names),
-            'file_size': len(response.content)
+            'sheets_count': len(st.session_state.sheet_names),
+            'file_size': len(excel_content)
         }
-        
-        st.session_state.loading_state = False
         return True
-        
     except Exception as e:
-        st.session_state.loading_state = False
-        st.session_state.error_message = f"Errore nel caricamento: {str(e)}"
-        st.session_state.data_loaded = False
-        return False
-
-def load_excel_from_file(uploaded_file):
-    """Carica file Excel da file caricato"""
-    try:
-        st.session_state.loading_state = True
-        st.session_state.error_message = ""
-        
-        excel_data = pd.ExcelFile(uploaded_file)
-        
-        # Salva i dati nel session_state
-        st.session_state.excel_data = excel_data
-        st.session_state.sheet_names = excel_data.sheet_names
-        st.session_state.current_sheet = excel_data.sheet_names[0]
-        st.session_state.data_loaded = True
-        st.session_state.file_info = {
-            'filename': uploaded_file.name,
-            'sheets_count': len(excel_data.sheet_names),
-            'file_size': uploaded_file.size
-        }
-        
-        st.session_state.loading_state = False
-        return True
-        
-    except Exception as e:
-        st.session_state.loading_state = False
-        st.session_state.error_message = f"Errore nel caricamento: {str(e)}"
-        st.session_state.data_loaded = False
+        st.error(f"❌ Errore nella lettura del file Excel: {str(e)}")
         return False
 
 def reset_data():
@@ -107,35 +101,125 @@ def reset_data():
     st.session_state.excel_data = None
     st.session_state.sheet_names = []
     st.session_state.current_sheet = None
-    st.session_state.url_input = ""
     st.session_state.data_loaded = False
-    st.session_state.error_message = ""
     st.session_state.file_info = {}
+    st.session_state.loading = False
 
 def get_current_dataframe():
     """Ottiene il DataFrame corrente dal sheet selezionato"""
     if st.session_state.excel_data and st.session_state.current_sheet:
-        try:
-            return pd.read_excel(st.session_state.excel_data, sheet_name=st.session_state.current_sheet)
-        except Exception as e:
-            st.session_state.error_message = f"Errore nella lettura del sheet: {str(e)}"
-            return None
+        return st.session_state.excel_data.get(st.session_state.current_sheet)
     return None
+
+def display_basic_stats(df):
+    """Mostra statistiche di base per il DataFrame"""
+    st.subheader("📈 Statistiche di Base")
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        st.metric("Righe", len(df))
+    with col2:
+        st.metric("Colonne", len(df.columns))
+    with col3:
+        st.metric("Valori Mancanti", df.isnull().sum().sum())
+    with col4:
+        st.metric("Memoria (KB)", f"{df.memory_usage(deep=True).sum() / 1024:.1f}")
+
+    # Statistiche descrittive per colonne numeriche
+    numeric_cols = df.select_dtypes(include=[np.number]).columns
+    if len(numeric_cols) > 0:
+        st.subheader("📊 Statistiche Descrittive (Colonne Numeriche)")
+        st.dataframe(df[numeric_cols].describe(), use_container_width=True)
+
+    # Informazioni sui tipi di dati
+    st.subheader("🔍 Informazioni sulle Colonne")
+    column_info = pd.DataFrame({
+        'Colonna': df.columns,
+        'Tipo di Dato': df.dtypes.astype(str),
+        'Valori Non Nulli': df.count(),
+        'Valori Nulli': df.isnull().sum(),
+        '% Valori Nulli': (df.isnull().sum() / len(df) * 100).round(2)
+    })
+    st.dataframe(column_info, use_container_width=True)
+
+def create_plots(df):
+    """Crea grafici per le colonne numeriche del DataFrame"""
+    numeric_cols = df.select_dtypes(include=[np.number]).columns
+    if len(numeric_cols) == 0:
+        st.warning("⚠️ Nessuna colonna numerica trovata per creare i grafici")
+        return
+
+    st.subheader("📈 Visualizzazioni")
+    
+    # Selezione delle colonne da visualizzare
+    selected_cols = st.multiselect(
+        "Seleziona le colonne numeriche da visualizzare:",
+        options=list(numeric_cols),
+        default=list(numeric_cols[:3])
+    )
+
+    if not selected_cols:
+        st.info("👆 Seleziona almeno una colonna numerica per visualizzare i grafici")
+        return
+
+    # Tipi di grafici
+    chart_types = st.multiselect(
+        "Seleziona i tipi di grafici:",
+        options=["Istogramma", "Box Plot", "Grafico a Linee", "Scatter Plot"],
+        default=["Istogramma", "Box Plot"]
+    )
+
+    for chart_type in chart_types:
+        if chart_type == "Istogramma":
+            st.subheader("📊 Istogrammi")
+            cols = st.columns(min(len(selected_cols), 3))
+            for i, col in enumerate(selected_cols):
+                with cols[i % 3]:
+                    fig = px.histogram(df, x=col, title=f"Distribuzione di {col}")
+                    fig.update_layout(height=400)
+                    st.plotly_chart(fig, use_container_width=True)
+
+        elif chart_type == "Box Plot":
+            st.subheader("📦 Box Plot")
+            fig = go.Figure()
+            for col in selected_cols:
+                fig.add_trace(go.Box(y=df[col], name=col))
+            fig.update_layout(title="Box Plot delle Colonne Selezionate", height=500)
+            st.plotly_chart(fig, use_container_width=True)
+
+        elif chart_type == "Grafico a Linee":
+            st.subheader("📈 Grafico a Linee")
+            fig = go.Figure()
+            for col in selected_cols:
+                fig.add_trace(go.Scatter(y=df[col], mode='lines', name=col))
+            fig.update_layout(title="Andamento delle Colonne Selezionate", height=500)
+            st.plotly_chart(fig, use_container_width=True)
+
+        elif chart_type == "Scatter Plot" and len(selected_cols) >= 2:
+            st.subheader("🎯 Scatter Plot")
+            col1_scatter = st.selectbox("Seleziona colonna X:", selected_cols, key="scatter_x")
+            col2_scatter = st.selectbox("Seleziona colonna Y:", 
+                                      [col for col in selected_cols if col != col1_scatter], 
+                                      key="scatter_y")
+            fig = px.scatter(df, x=col1_scatter, y=col2_scatter, 
+                           title=f"Scatter Plot: {col1_scatter} vs {col2_scatter}")
+            fig.update_layout(height=500)
+            st.plotly_chart(fig, use_container_width=True)
 
 def main():
     # Inizializza session_state
     initialize_session_state()
-    
-    st.title("📊 Excel Data Manager")
-    st.markdown("Gestione avanzata di file Excel con session state persistente")
-    
+
+    # Titolo
+    st.title("📊 Excel GitHub Analyzer")
+    st.markdown("Analizza file Excel direttamente da repository GitHub con una semplice URL.")
+
     # Sidebar per controlli
     with st.sidebar:
-        st.header("🔧 Controlli")
+        st.header("⚙️ Controlli")
         
         # Pulsanti di controllo
         col1, col2 = st.columns(2)
-        
         with col1:
             if st.button("🗑️ Reset", use_container_width=True):
                 reset_data()
@@ -143,238 +227,167 @@ def main():
         
         with col2:
             if st.button("🔄 Ricarica", use_container_width=True, disabled=not st.session_state.data_loaded):
-                if 'url' in st.session_state.file_info:
-                    load_excel_from_url(st.session_state.file_info['url'])
-                st.rerun()
+                if st.session_state.url_input:
+                    st.session_state.loading = True
+                    st.rerun()
+
+        # URL di esempio
+        st.subheader("🔗 URL di Esempio")
+        example_url = "https://github.com/plotly/datasets/blob/master/2014_world_gdp_with_codes.xlsx"
+        st.code(example_url, language="text")
         
+        if st.button("Usa URL di Esempio"):
+            st.session_state.url_input = example_url
+
         # Informazioni file caricato
         if st.session_state.data_loaded:
-            st.success("✅ Dati caricati!")
+            st.success("✅ File Caricato!")
             with st.expander("ℹ️ Info File"):
-                if 'filename' in st.session_state.file_info:
-                    st.write(f"**File:** {st.session_state.file_info['filename']}")
-                elif 'url' in st.session_state.file_info:
-                    st.write(f"**URL:** {st.session_state.file_info['url'][:50]}...")
-                
-                st.write(f"**Sheets:** {st.session_state.file_info.get('sheets_count', 0)}")
-                st.write(f"**Dimensione:** {st.session_state.file_info.get('file_size', 0):,} bytes")
-    
+                st.write(f"**URL:** ...{st.session_state.file_info['url'][-30:]}")
+                st.write(f"**Sheets:** {st.session_state.file_info['sheets_count']}")
+                st.write(f"**Dimensione:** {st.session_state.file_info['file_size']:,} bytes")
+
     # Area principale
     if not st.session_state.data_loaded:
-        # Sezione caricamento dati
-        st.header("📁 Carica Dati Excel")
+        # Input URL
+        st.header("🌐 Inserisci URL del File Excel da GitHub")
         
-        tab1, tab2 = st.tabs(["📎 File Upload", "🌐 Da URL"])
-        
-        with tab1:
-            uploaded_file = st.file_uploader(
-                "Scegli un file Excel",
-                type=['xlsx', 'xls'],
-                key="file_uploader"
-            )
+        url_input = "https://github.com/FrigoriferoAccecante/ticketfast_streamlit_final/blob/pec_form/P%26C%20reports.xlsx"
+        # Pulsante per analizzare
+        if st.button("🚀 Analizza File", type="primary", use_container_width=True):
+            if not url_input:
+                st.warning("⚠️ Per favore inserisci un URL valido")
+                return
             
-            if uploaded_file and st.button("Carica File", key="load_file"):
-                with st.spinner("Caricamento in corso..."):
-                    if load_excel_from_file(uploaded_file):
-                        st.success("File caricato con successo!")
+            st.session_state.loading = True
+            
+            with st.spinner("📥 Scaricando il file da GitHub..."):
+                excel_content = download_excel_from_github(url_input)
+            
+            if excel_content is not None:
+                with st.spinner("📖 Caricando i dati Excel..."):
+                    if load_excel_data(excel_content, url_input):
+                        st.success("✅ File caricato con successo!")
+                        st.session_state.loading = False
                         st.rerun()
+                    else:
+                        st.session_state.loading = False
+            else:
+                st.session_state.loading = False
+
+        # Istruzioni
+        st.markdown("---")
+        st.markdown("""
+        **Come utilizzare questa app:**
+        1. Vai su GitHub e trova il file Excel che vuoi analizzare
+        2. Copia l'URL del file (sia l'URL normale che quello raw funzionano)
+        3. Incolla l'URL nel campo sopra e clicca "Analizza File"
+        4. Esplora i dati utilizzando le diverse sezioni
         
-        with tab2:
-            url_input = st.text_input(
-                "URL del file Excel",
-                value=st.session_state.url_input,
-                placeholder="https://esempio.com/file.xlsx"
-            )
-            
-            if url_input != st.session_state.url_input:
-                st.session_state.url_input = url_input
-            
-            if url_input and st.button("Carica da URL", key="load_url"):
-                with st.spinner("Caricamento da URL..."):
-                    if load_excel_from_url(url_input):
-                        st.success("File caricato da URL con successo!")
-                        st.rerun()
-    
+        **Formati supportati:** .xlsx, .xls
+        """)
+
     else:
-        # Sezione visualizzazione dati
-        st.header("📋 Visualizzazione Dati")
+        # Visualizzazione dati caricati
+        st.header("📋 Analisi dei Dati")
         
-        # Selezione sheet
+        # Selezione del sheet se ci sono più sheet
         if len(st.session_state.sheet_names) > 1:
             selected_sheet = st.selectbox(
-                "Seleziona Sheet",
-                st.session_state.sheet_names,
+                "📋 Seleziona il sheet da analizzare:",
+                options=st.session_state.sheet_names,
                 index=st.session_state.sheet_names.index(st.session_state.current_sheet),
                 key="sheet_selector"
             )
             
-            # Aggiorna il sheet corrente solo se cambiato
             if selected_sheet != st.session_state.current_sheet:
                 st.session_state.current_sheet = selected_sheet
                 st.rerun()
-        
+        else:
+            st.info(f"📋 Sheet: **{st.session_state.current_sheet}**")
+
         # Ottieni DataFrame corrente
         df = get_current_dataframe()
         
-        if df is not None:
-            # Tabs per diverse visualizzazioni
-            tab1, tab2, tab3, tab4 = st.tabs(["📊 Dati", "📈 Grafici", "📋 Info", "🔍 Filtri"])
-            
+        if df is not None and not df.empty:
+            # Tab per organizzare il contenuto
+            tab1, tab2, tab3, tab4 = st.tabs(["📊 Dati", "📈 Statistiche", "🎨 Grafici", "🔍 Filtri & Download"])
+
             with tab1:
-                st.subheader(f"Sheet: {st.session_state.current_sheet}")
+                st.subheader(f"📊 Dati del Sheet: {st.session_state.current_sheet}")
                 
-                # Opzioni di visualizzazione
-                col1, col2, col3 = st.columns(3)
-                
-                with col1:
-                    show_index = st.checkbox("Mostra Index", value=False)
-                
-                with col2:
-                    rows_to_show = st.number_input("Righe da mostrare", min_value=5, max_value=len(df), value=min(100, len(df)))
-                
-                with col3:
-                    search_term = st.text_input("Cerca nei dati", placeholder="Termine di ricerca...")
-                
-                # Applica filtro di ricerca se presente
-                display_df = df.copy()
-                if search_term:
-                    mask = display_df.astype(str).apply(lambda x: x.str.contains(search_term, case=False, na=False)).any(axis=1)
-                    display_df = display_df[mask]
-                
-                # Mostra DataFrame
-                st.dataframe(
-                    display_df.head(int(rows_to_show)),
-                    use_container_width=True,
-                    hide_index=not show_index
-                )
-                
-                # Statistiche rapide
-                st.subheader("📊 Statistiche Rapide")
-                col1, col2, col3, col4 = st.columns(4)
-                
-                with col1:
-                    st.metric("Righe Totali", len(df))
-                
-                with col2:
-                    st.metric("Colonne", len(df.columns))
-                
-                with col3:
-                    st.metric("Celle Vuote", df.isnull().sum().sum())
-                
-                with col4:
-                    st.metric("Memoria (KB)", f"{df.memory_usage(deep=True).sum() / 1024:.1f}")
-            
-            with tab2:
-                st.subheader("📈 Visualizzazioni")
-                
-                numeric_columns = df.select_dtypes(include=['number']).columns.tolist()
-                
-                if len(numeric_columns) > 0:
-                    col1, col2 = st.columns(2)
-                    
-                    with col1:
-                        chart_type = st.selectbox("Tipo Grafico", ["Istogramma", "Box Plot", "Scatter Plot", "Linea"])
-                    
-                    with col2:
-                        selected_column = st.selectbox("Colonna", numeric_columns)
-                    
-                    if chart_type == "Istogramma":
-                        fig = px.histogram(df, x=selected_column, title=f"Istogramma di {selected_column}")
-                        st.plotly_chart(fig, use_container_width=True)
-                    
-                    elif chart_type == "Box Plot":
-                        fig = px.box(df, y=selected_column, title=f"Box Plot di {selected_column}")
-                        st.plotly_chart(fig, use_container_width=True)
-                    
-                    elif chart_type == "Scatter Plot" and len(numeric_columns) > 1:
-                        y_column = st.selectbox("Colonna Y", [col for col in numeric_columns if col != selected_column])
-                        fig = px.scatter(df, x=selected_column, y=y_column, title=f"Scatter Plot: {selected_column} vs {y_column}")
-                        st.plotly_chart(fig, use_container_width=True)
-                    
-                    elif chart_type == "Linea":
-                        fig = px.line(df, y=selected_column, title=f"Grafico a Linea di {selected_column}")
-                        st.plotly_chart(fig, use_container_width=True)
-                
-                else:
-                    st.info("Nessuna colonna numerica disponibile per i grafici.")
-            
-            with tab3:
-                st.subheader("📋 Informazioni Dettagliate")
-                
+                # Controlli per la visualizzazione
                 col1, col2 = st.columns(2)
-                
                 with col1:
-                    st.write("**Informazioni DataFrame:**")
-                    info_data = {
-                        "Righe": len(df),
-                        "Colonne": len(df.columns),
-                        "Memoria (bytes)": df.memory_usage(deep=True).sum(),
-                        "Celle Totali": df.size,
-                        "Celle Vuote": df.isnull().sum().sum()
-                    }
-                    
-                    for key, value in info_data.items():
-                        st.write(f"• **{key}:** {value:,}")
-                
+                    show_rows = st.number_input("Righe da mostrare:", min_value=5, max_value=len(df), value=min(100, len(df)))
                 with col2:
-                    st.write("**Tipi di Dati:**")
-                    dtype_counts = df.dtypes.value_counts()
-                    for dtype, count in dtype_counts.items():
-                        st.write(f"• **{dtype}:** {count} colonne")
-                
-                # Anteprima colonne
-                st.write("**Anteprima Colonne:**")
-                col_info = []
-                for col in df.columns[:10]:  # Mostra prime 10 colonne
-                    col_info.append({
-                        "Colonna": col,
-                        "Tipo": str(df[col].dtype),
-                        "Non Null": df[col].count(),
-                        "% Completezza": f"{(df[col].count() / len(df) * 100):.1f}%"
-                    })
-                
-                st.dataframe(pd.DataFrame(col_info), use_container_width=True, hide_index=True)
-            
+                    show_index = st.checkbox("Mostra indice righe", value=False)
+
+                # Mostra DataFrame
+                st.dataframe(df.head(int(show_rows)), use_container_width=True, hide_index=not show_index)
+
+            with tab2:
+                display_basic_stats(df)
+
+            with tab3:
+                create_plots(df)
+
             with tab4:
-                st.subheader("🔍 Filtri Avanzati")
+                st.subheader("🔍 Filtri e Download")
                 
-                # Filtri per colonne
-                filter_columns = st.multiselect("Seleziona Colonne da Mostrare", df.columns.tolist(), default=df.columns.tolist()[:5])
-                
-                if filter_columns:
-                    filtered_df = df[filter_columns]
-                    
-                    # Filtri per valori
-                    for col in filter_columns[:3]:  # Limite a 3 filtri per performance
-                        if df[col].dtype == 'object':
-                            unique_values = df[col].dropna().unique()
-                            if len(unique_values) <= 20:  # Solo se ci sono pochi valori unici
-                                selected_values = st.multiselect(
-                                    f"Filtra {col}",
-                                    unique_values,
-                                    key=f"filter_{col}"
-                                )
-                                if selected_values:
-                                    filtered_df = filtered_df[filtered_df[col].isin(selected_values)]
-                    
-                    st.dataframe(filtered_df, use_container_width=True, hide_index=True)
-                    
-                    # Pulsante download
+                # Filtro colonne
+                if len(df.columns) > 10:
+                    selected_columns = st.multiselect(
+                        "Seleziona colonne da visualizzare:",
+                        options=list(df.columns),
+                        default=list(df.columns[:10])
+                    )
+                    filtered_df = df[selected_columns] if selected_columns else df
+                else:
+                    filtered_df = df
+
+                # Filtro di ricerca
+                search_term = st.text_input("Cerca nei dati:", placeholder="Inserisci termine di ricerca...")
+                if search_term:
+                    mask = filtered_df.astype(str).apply(lambda x: x.str.contains(search_term, case=False, na=False)).any(axis=1)
+                    filtered_df = filtered_df[mask]
+
+                # Mostra dati filtrati
+                st.dataframe(filtered_df, use_container_width=True)
+
+                # Download
+                col1, col2 = st.columns(2)
+                with col1:
                     csv = filtered_df.to_csv(index=False)
                     st.download_button(
-                        label="📥 Scarica CSV Filtrato",
+                        label="📄 Scarica CSV Filtrato",
                         data=csv,
-                        file_name=f"filtered_data_{st.session_state.current_sheet}.csv",
+                        file_name=f"{st.session_state.current_sheet}_filtered.csv",
                         mime="text/csv"
                     )
-    
-    # Mostra errori se presenti
-    if st.session_state.error_message:
-        st.error(st.session_state.error_message)
-    
-    # Mostra stato di caricamento
-    if st.session_state.loading_state:
-        st.info("⏳ Caricamento in corso...")
+                
+                with col2:
+                    excel_buffer = io.BytesIO()
+                    filtered_df.to_excel(excel_buffer, sheet_name=st.session_state.current_sheet, index=False)
+                    excel_data = excel_buffer.getvalue()
+                    st.download_button(
+                        label="📊 Scarica Excel Filtrato",
+                        data=excel_data,
+                        file_name=f"{st.session_state.current_sheet}_filtered.xlsx",
+                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    )
+        else:
+            st.warning(f"⚠️ Il sheet '{st.session_state.current_sheet}' è vuoto o non leggibile")
+
+    # Gestione ricarica
+    if st.session_state.loading and st.session_state.url_input:
+        with st.spinner("🔄 Ricaricando il file..."):
+            excel_content = download_excel_from_github(st.session_state.url_input)
+            if excel_content is not None:
+                if load_excel_data(excel_content, st.session_state.url_input):
+                    st.success("✅ File ricaricato con successo!")
+                    st.session_state.loading = False
+                    st.rerun()
 
 if __name__ == "__main__":
     main()
