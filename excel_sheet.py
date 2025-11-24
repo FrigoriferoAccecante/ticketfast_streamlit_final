@@ -319,7 +319,12 @@ def main():
                 # Controlli per la visualizzazione
                 col1, col2 = st.columns(2)
                 with col1:
-                    show_rows = st.number_input("Righe da mostrare:", min_value=5, max_value=len(df), value=min(100, len(df)))
+                    show_rows = st.number_input(
+                        "Righe da mostrare:",
+                        min_value=1,
+                        max_value=len(df),
+                        value=min(100, len(df))
+                    )
                 with col2:
                     show_index = st.checkbox("Mostra indice righe", value=False)
 
