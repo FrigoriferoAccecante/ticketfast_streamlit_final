@@ -21,11 +21,6 @@ def salva_dati_excel(nome, cognome, email, data, numero_biglietti_prima, numero_
     Salva i dati nel file Excel (append)
     """
     try:
-        # Legge il file esistente
-        if os.path.exists(file_path):
-            df_esistente = pd.read_excel(file_path, engine='openpyxl')
-        else:
-            df_esistente = pd.DataFrame(columns=['Nome', 'Cognome', 'Email', 'Serate', 'Biglietti Prima', 'Biglietti Seconda'])
         
         # Crea nuovo record
         nuovo_record = pd.DataFrame({
@@ -36,12 +31,20 @@ def salva_dati_excel(nome, cognome, email, data, numero_biglietti_prima, numero_
             'Biglietti Prima': numero_biglietti_prima,
             'Biglietti Seconda': numero_biglietti_seconda
         })
-        
-        # Aggiunge il nuovo record
-        df = pd.concat([df, nuovo_record], ignore_index=True)
-        
-        # Salva il file
-        df.to_excel(file_path, index=False, engine='openpyxl')
+        sheet_name = "Muto cu sape u jocu"
+        if os.path.exists(file_path):
+            # Carica i dati esistenti dal foglio richiesto
+            df_esistente = pd.read_excel(file_path, sheet_name=sheet_name, engine='openpyxl')
+            # Crea un DataFrame solo con la nuova riga
+            df_nuova = pd.DataFrame([nuovo_record])
+            # Concatena (append) la nuova riga sotto le esistenti
+            df_finale = pd.concat([df_esistente, df_nuova], ignore_index=True)
+        else:
+            # Se il file non esiste ancora, crea DataFrame direttamente
+            df_finale = pd.DataFrame([nuovo_record])
+        # Scrivi il DataFrame aggiornato NEL FOGLIO che vuoi, lasciando invariati eventuali altri fogli
+        with pd.ExcelWriter(file_path, engine="openpyxl", mode='a' if os.path.exists(file_path) else 'w', if_sheet_exists="replace") as writer:
+            df_finale.to_excel(writer, sheet_name=sheet_name, index=False)
         st.info(f"Riga aggiunta a {file_path}: {nome} {cognome} {email}")
         return True
     except Exception as e:
