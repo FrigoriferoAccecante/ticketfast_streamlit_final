@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "qr-ticket-438612",
+  "private_key_id": "2e9415800f597e55ba61c345f0afd512f37adc0c",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC63iw1RTIw78PK\nCEkf7C2RzI85PuF2k9DREGi69pdLC4RbeyUUNfr6NB9gi35CmrZra17kIUce4wtC\nBNSN5swonJR4enP1hI1g/hNFUWO/NeDLsi8C91z3A6t7C2fLcpcfqjRHBB7f7DYg\nL4GjacGq1tGXHC2SfSghDNoaZ1WOYWa6LEfH/Lwo4PxDrrccRO1fiyT7G+EusOUj\n7x/KS1J4O+DNflvTdIRsgR+erGTX6WQDT17rH4zkTbnuhNr99/s9P+Ay2cuq3Q+N\nl5S1TB0b0wlwUghdc9Pxgdvo3W8I8oSZPQXtfgfaNJNZ055FQ8SkX2EpV8gowoEY\nCd9aNm3/AgMBAAECggEAFGSKjoWupIiF5VZiJImxr2eTebvS/w3CjA4uX7jpadcn\n6pPVyA7cBNILWo3eiYY4wiBFir/W8xfz8pB0Ycf+H7B2w28ZmIGOrDcOA1KOgB9x\nGMmpN7mm+436+MKV4S3wMBRzAA0DEYzFm12T2DGCYRJwbP02O/ZMms68PoVoYNEw\nlhx2p3YfRXs59zLEZovtc30zGpI27Mi181yb5Iwm3sdtkWK6l2KkSQ+lyp7wy/AU\nyMqpvXmfZhmNkaNyoQeMHbd8zVC1EGCZ00zlxBKhOwwiUe+r8KZGMqdI3HoEdfYv\nmTW1LwUIWbZjlhvUzs8TI05qI4V0hUvBThqJfPoUgQKBgQDeZJGSCsnZfutscvNt\n1tmcUyNj9s3iglJWm76K0cT2PA4p6+cb1EN6M8IfFQ5gdvJATlzGquSKcJRwvSB9\nMmd8cNscz8JLAC+TT0XTzEej5wJQIf6kOCc2D6xwVUIojr95DXvwzkywyhUaDLoM\nqBxq5EEcpKu7WECNnFqFop7PDQKBgQDXG0s4LP30kz919O3XirR64H+SWXKYMdK3\n6FAbg/o2C480j67f/iUrBQ/LeyFUvbZl0r+IfxufYjjeRNPkOJZTFZI0CdazmUsv\n7wuPDMwoiauXldfDNBxDpcogatdgP/mTTJEIWmN5eGaWD9dRFwBWOp832XJ901x9\nJxK6zvIOOwKBgD27jO0NMZq+MHuaLRiAW0eZjGljSSNnKZQBB5NhR1tSsFvSsAR5\nl4GEfI5EOgls+zH+jqJXLbmAJrRky2/1XeSdLzWANl67Xnl1t9xjCD/nEC1OQnEz\nZS8MisFj6Ul41o2zwIPHwGIStmjUv5Bj2f+R/MEGtOT8Sm8Ex9vwmETBAoGATA1f\nW940b7t77XWKffGRe/xRvmmXpY3ABbvCTugrl94gZKIEXzeY5ovkmLnRAAgPLBMG\nGvltx71Pg+5ryD3lkDyJM5Li8R7awXjP6mTI7fA21eJppZ+P+q7sNufvfB1CXTzt\n7jkfAHx8MMQrCYWLXfFeB73+x9Pp2GnvKlMuq68CgYEAmiQPxI3RH5Y/sz5C8Kcn\nzyavD38MUTLBcV3gSTySEuXCWuHdLYvXs9dGtJNjEraPWW3R0uF/rS1IBeif8goi\nNaQx3AvghwX3V9bhD10EsNGK2cfxzzJr9y1JEVpGbOMPFGCzFLU9m34bqhYudEaS\no6HgUPfvW/ouDoLdRjzS1Qw=\n-----END PRIVATE KEY-----\n",
+  "client_email": "ticketbucket@qr-ticket-438612.iam.gserviceaccount.com",
+  "client_id": "115710332068334322398",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/ticketbucket%40qr-ticket-438612.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

@@ -12,6 +12,7 @@ from email.mime.base import MIMEBase
 from email import encoders
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.oauth2.credentials import Credentials
+from oauth2client.service_account import ServiceAccountCredentials
 
 def show():
     st.title("Pagina 2 - Richiedi il tuo invito")
@@ -49,7 +50,9 @@ def show():
     def process():
         SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
         if os.path.exists('token.json'):
-            creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+            #creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+            creds = ServiceAccountCredentials.from_json_keyfile_name('qr-ticket-438612-2e9415800f59.json', SCOPES)
+            
         else:
             st.error("token.json non trovato. Generalo in locale e caricalo sul server.")
             return
