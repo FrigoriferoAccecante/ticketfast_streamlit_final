@@ -1,4 +1,6 @@
+import sys
 import streamlit as st
+import subprocess
 import pandas as pd
 import requests
 import plotly.express as px
@@ -211,6 +213,11 @@ def main():
     """
     Funzione principale dell'applicazione Streamlit
     """
+    try:
+     subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"])
+    except subprocess.CalledProcessError as e:
+        print("Errore durante l'installazione delle dipendenze:", e)
+        sys.exit(1)
     # Titolo e descrizione
     st.title("📊 Excel GitHub Analyzer")
     st.markdown("""
