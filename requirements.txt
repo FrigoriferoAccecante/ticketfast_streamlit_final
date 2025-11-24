@@ -1,7 +1,0 @@
-streamlit
-PyPDF2
-pymupdf
-pillow
-qrcode
-gspread
-oauth2client
