@@ -28,21 +28,21 @@ def salva_dati_excel(nome, cognome, email, data, numero_biglietti_prima, numero_
             df_esistente = pd.DataFrame(columns=['Nome', 'Cognome', 'Email', 'Serate', 'Biglietti Prima', 'Biglietti Seconda'])
         
         # Crea nuovo record
-        nuovo_record = {
+        nuovo_record = pd.DataFrame({
             'Nome': nome,
             'Cognome': cognome,
             'Email': email,
             'Serate': data,
             'Biglietti Prima': numero_biglietti_prima,
             'Biglietti Seconda': numero_biglietti_seconda
-        }
+        })
         
         # Aggiunge il nuovo record
-        df_nuovo = pd.DataFrame([nuovo_record])
-        df_finale = pd.concat([df_esistente, df_nuovo], ignore_index=True)
+        df = pd.concat([df, nuovo_record], ignore_index=True)
         
         # Salva il file
-        df_finale.to_excel(file_path, index=False, engine='openpyxl')
+        df.to_excel(file_path, index=False, engine='openpyxl')
+        st.info(f"Riga aggiunta a {file_path}: {nome} {cognome} {email}")
         return True
     except Exception as e:
         st.error(f"Errore nel salvataggio: {str(e)}")
