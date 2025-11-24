@@ -50,8 +50,8 @@ def show():
     def process():
         SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
         if os.path.exists('token.json'):
-            #creds = Credentials.from_authorized_user_file('token.json', SCOPES)
-            creds = ServiceAccountCredentials.from_json_keyfile_name('qr-ticket-438612-2e9415800f59.json', SCOPES)
+            creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+            #creds = ServiceAccountCredentials.from_json_keyfile_name('qr-ticket-438612-2e9415800f59.json', SCOPES)
             
         else:
             st.error("token.json non trovato. Generalo in locale e caricalo sul server.")
