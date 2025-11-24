@@ -290,9 +290,7 @@ def main():
             # Filtri per la visualizzazione
             col1, col2 = st.columns(2)
             with col1:
-                show_rows = st.number_input("Numero di righe da mostrare:", 
-                                          min_value=10, max_value=len(df), 
-                                          value=min(100, len(df)))
+                show_rows = st.number_input("Numero di righe da mostrare:", min_value=1, max_value=len(df), value=min(100, len(df)))
             with col2:
                 if len(df.columns) > 10:
                     show_all_columns = st.checkbox("Mostra tutte le colonne", value=False)
