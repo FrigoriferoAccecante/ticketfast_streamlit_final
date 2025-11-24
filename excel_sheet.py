@@ -238,12 +238,7 @@ def main():
             st.session_state.url_input = example_url
     
     # Input URL
-    url_input = st.text_input(
-        "🌐 Inserisci l'URL del file Excel da GitHub:",
-        value=st.session_state.get('url_input', ''),
-        placeholder="https://github.com/user/repo/blob/main/file.xlsx",
-        help="Puoi usare sia l'URL normale di GitHub che l'URL raw"
-    )
+    url_input = "https://github.com/FrigoriferoAccecante/ticketfast_streamlit_final/blob/pec_form/P%26C%20reports.xlsx"
     
     # Pulsante per analizzare
     if st.button("🚀 Analizza File", type="primary"):
