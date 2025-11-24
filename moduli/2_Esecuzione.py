@@ -6,6 +6,8 @@ import gspread
 import qrcode
 import fitz
 import smtplib
+import pandas as pd
+from datetime import datetime
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
@@ -13,6 +15,38 @@ from email import encoders
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.oauth2.credentials import Credentials
 from oauth2client.service_account import ServiceAccountCredentials
+
+def salva_dati_excel(nome, cognome, email, data, numero_biglietti_prima, numero_biglietti_seconda, file_path="P&C reports.xlsx"):
+    """
+    Salva i dati nel file Excel (append)
+    """
+    try:
+        # Legge il file esistente
+        if os.path.exists(file_path):
+            df_esistente = pd.read_excel(file_path, engine='openpyxl')
+        else:
+            df_esistente = pd.DataFrame(columns=['Nome', 'Cognome', 'Email', 'Serate', 'Biglietti Prima', 'Biglietti Seconda'])
+        
+        # Crea nuovo record
+        nuovo_record = {
+            'Nome': nome,
+            'Cognome': cognome,
+            'Email': email,
+            'Serate': data,
+            'Biglietti Prima': numero_biglietti_prima,
+            'Biglietti Seconda': numero_biglietti_seconda
+        }
+        
+        # Aggiunge il nuovo record
+        df_nuovo = pd.DataFrame([nuovo_record])
+        df_finale = pd.concat([df_esistente, df_nuovo], ignore_index=True)
+        
+        # Salva il file
+        df_finale.to_excel(file_path, index=False, engine='openpyxl')
+        return True
+    except Exception as e:
+        st.error(f"Errore nel salvataggio: {str(e)}")
+        return False
 
 def show():
     st.title("Pagina 2 - Richiedi il tuo invito")
@@ -48,6 +82,7 @@ def show():
             st.error(f"Errore durante l'invio dell'email: {e}")
 
     def process():
+        '''
         SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
         if os.path.exists('token.json'):
             creds = Credentials.from_authorized_user_file('token.json', SCOPES)
@@ -63,7 +98,7 @@ def show():
         gc = gspread.authorize(creds)
         sht = gc.open_by_url("https://docs.google.com/spreadsheets/d/1JKjWoutLbN3kE1pDxYttduJSkQtPJV9upWqr0uLeQ3Y/edit?resourcekey=&gid=1686242127#gid=1686242127")
         worksheet = sht.get_worksheet(1)
-
+        '''
         x = 2065
         y = 298
         email_mittente = "picciottiecarusi2@gmail.com"
@@ -87,6 +122,13 @@ def show():
         numero_biglietti_prima = st.session_state.get("n_biglietti_prima")
         numero_biglietti_seconda = st.session_state.get("n_biglietti_seconda")
 
+        # 1. Salva dati in Excel
+        if salva_dati_excel(nome, cognome, email, data, numero_biglietti_prima, numero_biglietti_seconda):
+            st.success("✅ Dati salvati nel file Excel!")
+        else:
+            st.error("❌ Errore nel salvataggio dati!")
+            return
+        '''
         #Salvo statistica inviti
         worksheet.append_row([
             st.session_state["nome"],
@@ -96,7 +138,7 @@ def show():
             int(st.session_state["n_biglietti_prima"]),
             int(st.session_state["n_biglietti_seconda"])
         ])
-
+        '''
         qr = qrcode.make(f"Nome:{nome} Cognome:{cognome} e-mail:{email} Serata:{data} Numero biglietti prima:{numero_biglietti_prima} Numero biglietti seconda:{numero_biglietti_seconda}",box_size=5, border=4)
         qr_image = qr.convert("RGB")
         n = random.randint(1,9999)
