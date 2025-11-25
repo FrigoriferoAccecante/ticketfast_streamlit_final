@@ -15,6 +15,23 @@ from email import encoders
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.oauth2.credentials import Credentials
 from oauth2client.service_account import ServiceAccountCredentials
+
+def download_excel(file_path, sheet_name="Foglio1"):
+    try:
+        with open(file_path, "rb") as f:
+            bytes_data = f.read()
+        st.success(f"File pronto per il download! ({len(bytes_data)//1024} KB)")
+        st.download_button(
+            label="📥 Scarica Excel aggiornato",
+            data=bytes_data,
+            file_name=f"inviti_data_aggiornato.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+    except FileNotFoundError:
+        st.error(f"Il file '{file_path}' non esiste.")
+    except Exception as e:
+        st.error(f"Errore durante il download: {e}")
+
 def git_push_excel(file_path):
     os.system('git config --global user.email "wdamiata@gmail.com"')
     os.system('git config --global user.name "Walter"')
@@ -56,6 +73,7 @@ def salva_dati_excel(nome, cognome, email, data, numero_biglietti_prima, numero_
         with pd.ExcelWriter(file_path, engine="openpyxl", mode='a' if os.path.exists(file_path) else 'w', if_sheet_exists="replace") as writer:
             df_finale.to_excel(file_path, sheet_name=sheet_name, index=False)
             git_push_excel(file_path)
+            download_excel(file_path, sheet_name)
         return True
     except Exception as e:
         st.error(f"Errore nel salvataggio: {str(e)}")
