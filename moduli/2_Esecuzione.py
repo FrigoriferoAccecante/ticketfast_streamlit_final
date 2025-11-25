@@ -26,6 +26,8 @@ def git_push_excel(file_path, branch):
     auth_repo_url = "https://"+token+"@github.com/FrigoriferoAccecante/ticketfast_streamlit_final"
 
     os.system('git branch')
+    os.system('git config --global user.email "wdamiata@gmail.com"')
+    os.system('git config --global user.name "FrigoriferoAccecante"')
     # Cambia remote temporaneamente
     os.system(f'git remote set-url origin {auth_repo_url}')
 
