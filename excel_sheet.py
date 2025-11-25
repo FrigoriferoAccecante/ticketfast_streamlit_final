@@ -231,13 +231,6 @@ def main():
                     st.session_state.loading = True
                     st.rerun()
 
-        # URL di esempio
-        st.subheader("🔗 URL di Esempio")
-        example_url = "https://github.com/plotly/datasets/blob/master/2014_world_gdp_with_codes.xlsx"
-        st.code(example_url, language="text")
-        
-        if st.button("Usa URL di Esempio"):
-            st.session_state.url_input = example_url
 
         # Informazioni file caricato
         if st.session_state.data_loaded:
@@ -277,15 +270,7 @@ def main():
 
         # Istruzioni
         st.markdown("---")
-        st.markdown("""
-        **Come utilizzare questa app:**
-        1. Vai su GitHub e trova il file Excel che vuoi analizzare
-        2. Copia l'URL del file (sia l'URL normale che quello raw funzionano)
-        3. Incolla l'URL nel campo sopra e clicca "Analizza File"
-        4. Esplora i dati utilizzando le diverse sezioni
         
-        **Formati supportati:** .xlsx, .xls
-        """)
 
     else:
         # Visualizzazione dati caricati
