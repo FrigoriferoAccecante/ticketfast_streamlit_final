@@ -20,9 +20,6 @@ import os
 import streamlit as st
 
 def git_push_excel(file_path, branch="pec_excel"):
-    # Configura username ed email se necessario
-    os.system('git config --global user.email "stringa@email.com"')
-    os.system('git config --global user.name "Nome Cognome"')
     
     # Costruisci l'URL autenticato per il remote
 
