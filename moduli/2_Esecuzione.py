@@ -46,7 +46,7 @@ def salva_dati_excel(nome, cognome, email, data, numero_biglietti_prima, numero_
             # Se il file non esiste ancora, crea DataFrame direttamente
             df_finale = pd.DataFrame([nuovo_record])
         # Scrivi il DataFrame aggiornato NEL FOGLIO che vuoi, lasciando invariati eventuali altri fogli
-        with pd.ExcelWriter(file_path+"_new", engine="openpyxl", mode='a' if os.path.exists(file_path) else 'w', if_sheet_exists="replace") as writer:
+        with pd.ExcelWriter("new"+file_path, engine="openpyxl", mode='a' if os.path.exists(file_path) else 'w', if_sheet_exists="replace") as writer:
             df_finale.to_excel(writer, sheet_name=sheet_name, index=False)
         return True
     except Exception as e:
