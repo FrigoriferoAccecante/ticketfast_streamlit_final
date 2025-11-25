@@ -27,15 +27,15 @@ def git_push_excel(file_path, branch):
 
     os.system('git branch')
     # Cambia remote temporaneamente
-    os.system(f'git remote set-url origin' +auth_repo_url)
+    os.system(f'git remote set-url origin {auth_repo_url}')
 
     # Aggiungi e committa
-    os.system(f'git add '+file_path)
+    os.system(f'git add "{file_path}"')
     commit_message = f'Aggiornamento automatico '+file_path
-    os.system(f'git commit -m '+commit_message+' || echo "Niente da committare"')
+    os.system(f'git commit -m "{commit_message}" || echo "Niente da committare"')
 
     # Push
-    result = os.system(f"git push origin "+branch)
+    result = os.system(f"git push origin {branch}")
     if result == 0:
         st.success("✅ Push su GitHub effettuato!")
     else:
