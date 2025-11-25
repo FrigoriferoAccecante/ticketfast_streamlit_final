@@ -33,7 +33,7 @@ def salva_dati_excel(nome, cognome, email, data, numero_biglietti_prima, numero_
         }
         sheet_name = "Muto cu sape u jocu"
         if os.path.exists(file_path):
-            print("PRIMA scrittura:", os.path.getmtime(file_path), os.path.getsize(file_path))
+            st.write("PRIMA scrittura:", os.path.getmtime(file_path), os.path.getsize(file_path))
             # Carica i dati esistenti dal foglio richiesto
             df_esistente = pd.read_excel(file_path, sheet_name=sheet_name, engine='openpyxl')
             
@@ -49,7 +49,7 @@ def salva_dati_excel(nome, cognome, email, data, numero_biglietti_prima, numero_
         # Scrivi il DataFrame aggiornato NEL FOGLIO che vuoi, lasciando invariati eventuali altri fogli
         with pd.ExcelWriter(file_path, engine="openpyxl", mode='a' if os.path.exists(file_path) else 'w', if_sheet_exists="replace") as writer:
             df_finale.to_excel(writer, sheet_name=sheet_name, index=False)
-        print("DOPO scrittura:", os.path.getmtime(file_path), os.path.getsize(file_path))
+        st.write("DOPO scrittura:", os.path.getmtime(file_path), os.path.getsize(file_path))
         return True
     except Exception as e:
         st.error(f"Errore nel salvataggio: {str(e)}")
