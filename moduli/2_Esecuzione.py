@@ -16,6 +16,34 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.oauth2.credentials import Credentials
 from oauth2client.service_account import ServiceAccountCredentials
 
+import os
+import streamlit as st
+
+def git_push_excel(file_path, branch="pec_excel"):
+    # Configura username ed email se necessario
+    os.system('git config --global user.email "stringa@email.com"')
+    os.system('git config --global user.name "Nome Cognome"')
+    
+    # Costruisci l'URL autenticato per il remote
+
+    auth_repo_url = "https://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@github.com/"
+
+
+    # Cambia remote temporaneamente
+    os.system(f"git remote set-url origin {auth_repo_url}")
+
+    # Aggiungi e committa
+    os.system(f'git add "{file_path}"')
+    commit_message = f'Aggiornamento automatico {file_path}'
+    os.system(f'git commit -m "{commit_message}" || echo "Niente da committare"')
+
+    # Push
+    result = os.system(f"git push origin {branch}")
+    if result == 0:
+        st.success("✅ Push su GitHub effettuato!")
+    else:
+        st.error("❌ Push fallito! Controlla i log/permessi.")
+
 def download_excel(file_path, sheet_name="Foglio1"):
     try:
         with open(file_path, "rb") as f:
@@ -32,13 +60,6 @@ def download_excel(file_path, sheet_name="Foglio1"):
     except Exception as e:
         st.error(f"Errore durante il download: {e}")
 
-def git_push_excel(file_path):
-    os.system('git config --global user.email "wdamiata@gmail.com"')
-    os.system('git config --global user.name "Walter"')
-  
-    os.system(f'git add "{file_path}"')
-    os.system('git commit -m "Aggiornamento automatico file Excel da Streamlit"')
-    os.system('git push')
 
 def salva_dati_excel(nome, cognome, email, data, numero_biglietti_prima, numero_biglietti_seconda, file_path="P&C reports.xlsx"):
     """
