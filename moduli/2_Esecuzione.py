@@ -24,8 +24,7 @@ def git_push_excel(file_path, branch):
     # Costruisci l'URL autenticato per il remote
     token = st.secrets["GITHUB_TOKEN"]
     auth_repo_url = f"https://{token}@github.com/FrigoriferoAccecante/ticketfast_streamlit_final"
-    st.write(auth_repo_url)
-    os.system('git branch')
+
     os.system('git config --global user.email "wdamiata@gmail.com"')
     os.system('git config --global user.name "FrigoriferoAccecante"')
     # Cambia remote temporaneamente
@@ -38,10 +37,9 @@ def git_push_excel(file_path, branch):
 
     # Push
     result = os.system(f"git push origin {branch}")
-    if result == 0:
-        st.success("✅ Push su GitHub effettuato!")
-    else:
+    if result != 0:
         st.error("❌ Push fallito! Controlla i log/permessi.")
+
 
 def download_excel(file_path, sheet_name="Foglio1"):
     try:
@@ -93,7 +91,6 @@ def salva_dati_excel(nome, cognome, email, data, numero_biglietti_prima, numero_
         with pd.ExcelWriter(file_path, engine="openpyxl", mode='a' if os.path.exists(file_path) else 'w', if_sheet_exists="replace") as writer:
             df_finale.to_excel(file_path, sheet_name=sheet_name, index=False)
             git_push_excel(file_path,"pec_form")
-            download_excel(file_path, sheet_name)
         return True
     except Exception as e:
         st.error(f"Errore nel salvataggio: {str(e)}")
