@@ -49,9 +49,6 @@ def salva_dati_excel(nome, cognome, email, data, numero_biglietti_prima, numero_
         # Scrivi il DataFrame aggiornato NEL FOGLIO che vuoi, lasciando invariati eventuali altri fogli
         with pd.ExcelWriter(file_path, engine="openpyxl", mode='a' if os.path.exists(file_path) else 'w', if_sheet_exists="replace") as writer:
             df_finale.to_excel(writer, sheet_name=sheet_name, index=False)
-        st.write("DOPO scrittura:", os.path.getmtime(file_path), os.path.getsize(file_path))
-        finale = pd.read_excel(file_path, sheet_name=sheet_name, engine='openpyxl')
-        st.write(f"\nULTIMA riga salvata nel file Excel: \n{finale.tail(1)}")
         return True
     except Exception as e:
         st.error(f"Errore nel salvataggio: {str(e)}")
