@@ -19,23 +19,23 @@ from oauth2client.service_account import ServiceAccountCredentials
 import os
 import streamlit as st
 
-def git_push_excel(file_path, branch="pec_excel"):
+def git_push_excel(file_path, branch):
     
     # Costruisci l'URL autenticato per il remote
     token = st.secrets["GITHUB_TOKEN"]
     auth_repo_url = "https://"+token+"@github.com/FrigoriferoAccecante/ticketfast_streamlit_final"
 
-
+    os.system('git branch')
     # Cambia remote temporaneamente
-    os.system(f"git remote set-url origin {auth_repo_url}")
+    os.system(f'git remote set-url origin' +auth_repo_url)
 
     # Aggiungi e committa
-    os.system(f'git add "{file_path}"')
-    commit_message = f'Aggiornamento automatico {file_path}'
-    os.system(f'git commit -m "{commit_message}" || echo "Niente da committare"')
+    os.system(f'git add '+file_path)
+    commit_message = f'Aggiornamento automatico '+file_path
+    os.system(f'git commit -m '+commit_message+' || echo "Niente da committare"')
 
     # Push
-    result = os.system(f"git push origin {branch}")
+    result = os.system(f"git push origin "+branch)
     if result == 0:
         st.success("✅ Push su GitHub effettuato!")
     else:
@@ -90,7 +90,7 @@ def salva_dati_excel(nome, cognome, email, data, numero_biglietti_prima, numero_
         # Scrivi il DataFrame aggiornato NEL FOGLIO che vuoi, lasciando invariati eventuali altri fogli
         with pd.ExcelWriter(file_path, engine="openpyxl", mode='a' if os.path.exists(file_path) else 'w', if_sheet_exists="replace") as writer:
             df_finale.to_excel(file_path, sheet_name=sheet_name, index=False)
-            git_push_excel(file_path)
+            git_push_excel(file_path,"pec_form")
             download_excel(file_path, sheet_name)
         return True
     except Exception as e:
