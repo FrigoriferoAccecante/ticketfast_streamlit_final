@@ -22,8 +22,8 @@ import streamlit as st
 def git_push_excel(file_path, branch="pec_excel"):
     
     # Costruisci l'URL autenticato per il remote
-
-    auth_repo_url = "https://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@github.com/"
+    token = st.secrets["GITHUB_TOKEN"]
+    auth_repo_url = "https://{token}@github.com/"
 
 
     # Cambia remote temporaneamente
