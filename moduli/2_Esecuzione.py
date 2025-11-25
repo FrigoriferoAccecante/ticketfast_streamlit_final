@@ -23,7 +23,7 @@ def git_push_excel(file_path, branch="pec_excel"):
     
     # Costruisci l'URL autenticato per il remote
     token = st.secrets["GITHUB_TOKEN"]
-    auth_repo_url = "https://{token}@github.com/FrigoriferoAccecante/ticketfast_streamlit_final"
+    auth_repo_url = "https://"+token+"@github.com/FrigoriferoAccecante/ticketfast_streamlit_final"
 
 
     # Cambia remote temporaneamente
