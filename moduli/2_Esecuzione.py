@@ -16,6 +16,9 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.oauth2.credentials import Credentials
 from oauth2client.service_account import ServiceAccountCredentials
 def git_push_excel(file_path):
+    os.system('git config --global user.email "wdamiata@gmail.com"')
+    os.system('git config --global user.name "Walter"')
+  
     os.system(f'git add "{file_path}"')
     os.system('git commit -m "Aggiornamento automatico file Excel da Streamlit"')
     os.system('git push')
