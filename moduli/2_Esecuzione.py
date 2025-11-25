@@ -35,17 +35,24 @@ def salva_dati_excel(nome, cognome, email, data, numero_biglietti_prima, numero_
         if os.path.exists(file_path):
             # Carica i dati esistenti dal foglio richiesto
             df_esistente = pd.read_excel(file_path, sheet_name=sheet_name, engine='openpyxl')
+            st.write("DEBUG - Contenuto FILE PRIMA1 dell'append:", df_esistente)
+            st.write("Colonne DataFrame esistente:", list(df_esistente.columns))
+            
             # Crea un DataFrame solo con la nuova riga
             df_nuova = pd.DataFrame([nuovo_record])
+            st.write("Colonne DataFrame nuova:", list(df_nuova.columns))
+            st.write("DEBUG - Contenuto FILE PRIMA2 dell'append:", df_nuova)
+            df_nuova = df_nuova[df_esistente.columns]
             # Concatena (append) la nuova riga sotto le esistenti
             df_finale = pd.concat([df_esistente, df_nuova], ignore_index=True)
+            st.write("DEBUG - Contenuto FILE PRIMA3 dell'append:", df_finale)
         else:
             # Se il file non esiste ancora, crea DataFrame direttamente
             df_finale = pd.DataFrame([nuovo_record])
         # Scrivi il DataFrame aggiornato NEL FOGLIO che vuoi, lasciando invariati eventuali altri fogli
         with pd.ExcelWriter(file_path, engine="openpyxl", mode='a' if os.path.exists(file_path) else 'w', if_sheet_exists="replace") as writer:
             df_finale.to_excel(writer, sheet_name=sheet_name, index=False)
-        st.info(f"Riga aggiunta a {file_path}: {nome} {cognome} {email}")
+        st.write("DEBUG - Contenuto FILE DOPO il salvataggio:", df_finale)
         return True
     except Exception as e:
         st.error(f"Errore nel salvataggio: {str(e)}")
