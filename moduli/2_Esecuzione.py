@@ -36,9 +36,13 @@ def salva_dati_excel(nome, cognome, email, data, numero_biglietti_prima, numero_
             # Carica i dati esistenti dal foglio richiesto
             df_esistente = pd.read_excel(file_path, sheet_name=sheet_name, engine='openpyxl')
             st.write("DEBUG - Contenuto FILE PRIMA1 dell'append:", df_esistente)
+            st.write("Colonne DataFrame esistente:", list(df_esistente.columns))
+            
             # Crea un DataFrame solo con la nuova riga
             df_nuova = pd.DataFrame([nuovo_record])
+            st.write("Colonne DataFrame nuova:", list(df_nuova.columns))
             st.write("DEBUG - Contenuto FILE PRIMA2 dell'append:", df_nuova)
+            df_nuova = df_nuova[df_esistente.columns]
             # Concatena (append) la nuova riga sotto le esistenti
             df_finale = pd.concat([df_esistente, df_nuova], ignore_index=True)
             st.write("DEBUG - Contenuto FILE PRIMA3 dell'append:", df_finale)
