@@ -15,6 +15,10 @@ from email import encoders
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.oauth2.credentials import Credentials
 from oauth2client.service_account import ServiceAccountCredentials
+def git_push_excel(file_path):
+    os.system(f'git add "{file_path}"')
+    os.system('git commit -m "Aggiornamento automatico file Excel da Streamlit"')
+    os.system('git push')
 
 def salva_dati_excel(nome, cognome, email, data, numero_biglietti_prima, numero_biglietti_seconda, file_path="P&C reports.xlsx"):
     """
@@ -48,6 +52,7 @@ def salva_dati_excel(nome, cognome, email, data, numero_biglietti_prima, numero_
         # Scrivi il DataFrame aggiornato NEL FOGLIO che vuoi, lasciando invariati eventuali altri fogli
         with pd.ExcelWriter(file_path, engine="openpyxl", mode='a' if os.path.exists(file_path) else 'w', if_sheet_exists="replace") as writer:
             df_finale.to_excel(file_path, sheet_name=sheet_name, index=False)
+            git_push_excel(file_path)
         return True
     except Exception as e:
         st.error(f"Errore nel salvataggio: {str(e)}")
