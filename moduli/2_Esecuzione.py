@@ -23,7 +23,7 @@ def git_push_excel(file_path, branch):
     
     # Costruisci l'URL autenticato per il remote
     token = st.secrets["GITHUB_TOKEN"]
-    auth_repo_url = "https://"+token+"@github.com/FrigoriferoAccecante/ticketfast_streamlit_final"
+    auth_repo_url = f"https://{token}@github.com/FrigoriferoAccecante/ticketfast_streamlit_final"
 
     os.system('git branch')
     os.system('git config --global user.email "wdamiata@gmail.com"')
