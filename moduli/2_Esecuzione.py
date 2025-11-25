@@ -24,12 +24,12 @@ def salva_dati_excel(nome, cognome, email, data, numero_biglietti_prima, numero_
         
         # Crea nuovo record
         nuovo_record = {
-            'Nome': nome,
-            'Cognome': cognome,
-            'Email': email,
-            'Serate': data,
-            'Biglietti Prima': numero_biglietti_prima,
-            'Biglietti Seconda': numero_biglietti_seconda
+            'NOME': nome,
+            'COGNOME': cognome,
+            'EMAIL': email,
+            'SERATE': data,
+            'NUMERO PRIMA': numero_biglietti_prima,
+            'NUMERO SECONDA': numero_biglietti_seconda
         }
         sheet_name = "Muto cu sape u jocu"
         if os.path.exists(file_path):
