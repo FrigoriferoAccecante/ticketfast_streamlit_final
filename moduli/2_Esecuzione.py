@@ -42,7 +42,7 @@ def salva_dati_excel(nome, cognome, email, data, numero_biglietti_prima, numero_
             df_nuova = pd.DataFrame([nuovo_record])
             st.write("Colonne DataFrame nuova:", list(df_nuova.columns))
             st.write("DEBUG - Contenuto FILE PRIMA2 dell'append:", df_nuova)
-            df_nuova = df_nuova[df_esistente.columns]
+            
             # Concatena (append) la nuova riga sotto le esistenti
             df_finale = pd.concat([df_esistente, df_nuova], ignore_index=True)
             st.write("DEBUG - Contenuto FILE PRIMA3 dell'append:", df_finale)
